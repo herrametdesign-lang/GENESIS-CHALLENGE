@@ -280,7 +280,7 @@ main { margin:0 auto; }
     <div class="eyebrow">SQ-ONE Research Labs · Original puzzle concept</div>
     <h1>GENESIS <span>CHALLENGE</span></h1>
   </div>
-  <div class="status test-build" id="releaseBadge">◆ BUILD DE PRUEBA · RC1 / 0.4.1-test</div>
+  <div class="status test-build" id="releaseBadge">◆ BUILD DE PRUEBA · RC1 / 0.4.2-test</div>
 </header>
 <section id="appUpdateNotice" aria-live="polite" role="status" hidden>
   <span id="appUpdateMessage">Hay una versión lista para instalar cuando estés en un punto seguro.</span>
@@ -307,13 +307,13 @@ main { margin:0 auto; }
     <button type="button" id="installPwaButton" hidden>INSTALAR GENESIS</button>
     <div class="module-grid" id="moduleGrid" hidden>
       <button class="module-card" data-module="simon"><strong><span class="module-icon">◈</span>SIMON</strong><span>Memoria secuencial de luces y tonos.</span></button>
-      <button class="module-card" data-module="memo" id="memoLaunch" disabled aria-describedby="memoLockStatus"><strong><span class="module-icon">⬡</span>MEMO TEST</strong><span>Emparejá figuras sólidas con sus contornos.</span></button>
+      <button class="module-card" data-module="memo" id="memoLaunch" aria-describedby="memoLockStatus"><strong><span class="module-icon">⬡</span>MEMO TEST</strong><span>Emparejá figuras sólidas con sus contornos.</span></button>
       <button class="module-card" data-module="sudoku"><strong><span class="module-icon">▦</span>SUDOKU</strong><span>Resolvé cuatro niveles consecutivos de 9 × 9.</span></button>
       <button class="module-card" data-module="words"><strong><span class="module-icon">⬢</span>SOPA DE LETRAS</strong><span>Conectá letras y encontrá palabras ocultas.</span></button>
 <button class="module-card" type="button" id="referralsLaunch"><strong><span class="module-icon">◇</span>INVITAR AMIGOS</strong><span>Compartí GENESIS y acumulá méritos.</span></button>
 
     </div>
-    <p id="memoLockStatus" class="hint" aria-live="polite">Memo Test se habilita al completar los cuatro niveles de Sudoku.</p>
+    <p id="memoLockStatus" class="hint" aria-live="polite">Memo Test disponible desde el menú principal.</p>
   </div>
 </section>
 <section id="referralsView" class="module-screen">
@@ -510,8 +510,8 @@ main { margin:0 auto; }
 })();
 </script>
 
-<script src="motor-genesis.browser.js?v=0.4.1-test"></script>
-<script src="diamond-security/diamond-unbunker.js?v=0.4.1-test"></script>
+<script src="motor-genesis.browser.js?v=0.4.2-test"></script>
+<script src="diamond-security/diamond-unbunker.js?v=0.4.2-test"></script>
 
 <script>
 const NS = "http://www.w3.org/2000/svg";
@@ -1024,7 +1024,6 @@ const gameStage=$("gameStage");
 let activeModule="home";
 const initializedModules=new Set(["home"]);
 function showModule(name){
-  if(name==="memo"&&memoProgressLocked())return;
   clearGameTimers();
   if(window.genesisStopSounds)window.genesisStopSounds();
   if(activeModule==="simon") simonReset();
@@ -1133,12 +1132,11 @@ function loadSudokuProgress(){
 }
 let sudokuProgress=loadSudokuProgress(),sudokuPuzzle=null,sudokuSolution=null,sudokuBoard=null,sudokuCurrentLevel=1,sudokuSolved=false;
 function saveSudokuProgress(){try{sessionStorage.setItem(SUDOKU_SESSION_KEY,JSON.stringify(sudokuProgress));}catch(_){}}
-function memoProgressLocked(){return sudokuProgress.completed.length<4;}
 function syncSudokuUnlocks(){
   Array.from($("sudokuLevel").options).forEach(option=>{option.disabled=Number(option.value)>sudokuProgress.unlocked;});
-  const memoLocked=memoProgressLocked();$("memoLaunch").disabled=memoLocked;
-  $("memoLockStatus").hidden=!memoLocked||$("moduleGrid").hidden;
-  $("memoLockStatus").textContent=memoLocked?`Memo Test se habilita al completar los cuatro niveles de Sudoku (${sudokuProgress.completed.length}/4).`:"Memo Test desbloqueado. ¡Ya podés jugar!";
+  $("memoLaunch").disabled=false;
+  $("memoLockStatus").hidden=true;
+  $("memoLockStatus").textContent="Memo Test disponible. Podés jugar en cualquier momento.";
   $("sudokuNext").disabled=!sudokuSolved||sudokuCurrentLevel>=4||sudokuCurrentLevel>=sudokuProgress.unlocked;
   $("sudokuNext").hidden=sudokuCurrentLevel>=4;
 }
@@ -1195,7 +1193,7 @@ function checkSudoku(){
   if(!matchesSolution){$("sudokuStatus").textContent="Solución incorrecta: la grilla está completa y sin duplicados, pero no coincide con la solución de este nivel.";if(window.genesisPlaySound)window.genesisPlaySound("error");return;}
   sudokuSolved=true;if(!sudokuProgress.completed.includes(sudokuCurrentLevel))sudokuProgress.completed.push(sudokuCurrentLevel);
   sudokuProgress.completed.sort((a,b)=>a-b);if(sudokuCurrentLevel<4)sudokuProgress.unlocked=Math.max(sudokuProgress.unlocked,sudokuCurrentLevel+1);
-  saveSudokuProgress();$("sudokuStatus").textContent=sudokuCurrentLevel===4?"¡LOS CUATRO NIVELES COMPLETADOS! MEMO TEST DESBLOQUEADO.":`¡NIVEL ${sudokuCurrentLevel} RESUELTO! El nivel ${sudokuCurrentLevel+1} ya está habilitado.`;
+  saveSudokuProgress();$("sudokuStatus").textContent=sudokuCurrentLevel===4?"¡LOS CUATRO NIVELES DE SUDOKU COMPLETADOS!":`¡NIVEL ${sudokuCurrentLevel} RESUELTO! El nivel ${sudokuCurrentLevel+1} ya está habilitado.`;
   document.querySelectorAll(".sudoku-cell").forEach(input=>input.readOnly=true);
   if(window.genesisPlaySound)window.genesisPlaySound("success");syncSudokuUnlocks();
 }
@@ -1410,11 +1408,11 @@ $("wordUndo").addEventListener("click",()=>{clearWordSelection();$("wordsStatus"
 })();
 
 </script>
-<script src="genesis-referrals.demo.js?v=0.4.1-test"></script>
+<script src="genesis-referrals.demo.js?v=0.4.2-test"></script>
 <script>
 (function(){
   "use strict";
-  const BUILD_VERSION="0.4.1-test";
+  const BUILD_VERSION="0.4.2-test";
   const notice=document.getElementById("appUpdateNotice"),message=document.getElementById("appUpdateMessage");
   const applyButton=document.getElementById("applyUpdateButton"),checkButton=document.getElementById("checkUpdates");
   const pwaStatus=document.getElementById("pwaStatus"),installButton=document.getElementById("installPwaButton");
