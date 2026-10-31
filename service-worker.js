@@ -1,5 +1,5 @@
-/* GENESIS CHALLENGE PWA · versión de prueba 0.4.1-test */
-const APP_VERSION = "0.4.1-test";
+/* GENESIS CHALLENGE PWA · versión de prueba 0.4.2-test */
+const APP_VERSION = "0.4.2-test";
 const CACHE_PREFIX = "genesis-challenge-";
 const CACHE_NAME = CACHE_PREFIX + APP_VERSION;
 const APP_SHELL = [
