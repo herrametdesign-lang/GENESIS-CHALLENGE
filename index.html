@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GENESIS CHALLENGE | FREAKCOIN</title>
+<style>
+:root {
+  --turquoise: #52DDC8;
+  --gold: #C5A568;
+  --black: #101615;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% 48%, #18312d 0%, #101615 52%, #080c0b 100%);
+  color: #e9f5f0;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main { width: 100%; max-width: 1500px; padding: 20px; }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 auto 8px;
+}
+.eyebrow {
+  color: var(--turquoise);
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+h1 {
+  margin: 7px 0;
+  font-size: clamp(23px, 4vw, 43px);
+  letter-spacing: 3px;
+  font-weight: 800;
+}
+h1 span { color: var(--turquoise); }
+.status {
+  color: var(--gold);
+  border: 1px solid #806e47;
+  padding: 9px 12px;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+.stage {
+  border: 1px solid #29423c;
+  background: linear-gradient(145deg, #14201eaa, #080e0d88);
+  box-shadow: 0 0 65px #52ddc810, inset 0 0 35px #0008;
+  overflow: hidden;
+}
+svg { display: block; width: 100%; height: auto; }
+footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 13px;
+  color: #78938a;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+@media(max-width:600px) {
+  main { padding: 10px; }
+  .status { font-size: 8px; }
+  footer { font-size: 8px; }
+}
+.game-controls{padding:14px;text-align:center;background:#0b1210;border:1px solid #29423c;color:#52DDC8}
+.game-controls button{padding:10px;margin:5px;background:#101c18;color:#52DDC8;border:1px solid #52DDC8}
+.stats{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+#gameStatus{color:#C5A568}
+
+/* Personalizacion y accesibilidad */
+:root {
+  --page-bg: radial-gradient(ellipse at 50% 48%, #18312d 0%, #101615 52%, #080c0b 100%);
+  --page-text: #e9f5f0;
+  --panel-bg: #0b1210;
+  --panel-text: #52DDC8;
+  --panel-border: #29423c;
+}
+body { background: var(--page-bg); color: var(--page-text); }
+#accessibilityPanel {
+  margin-top: 12px; padding: 16px;
+  background: var(--panel-bg); color: var(--panel-text);
+  border: 1px solid var(--panel-border);
+}
+#accessibilityPanel h2 { margin: 0 0 12px; font-size: 1.15em; }
+#accessibilityPanel .pref-row {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 8px; margin: 12px 0;
+}
+#accessibilityPanel select, #accessibilityPanel button {
+  min-height: 42px; padding: 9px 12px;
+  border: 1px solid var(--panel-text);
+  border-radius: 3px; background: var(--panel-bg);
+  color: var(--panel-text); font: inherit;
+}
+#accessibilityPanel button { cursor: pointer; }
+#accessibilityPanel button:focus-visible,
+#accessibilityPanel select:focus-visible {
+  outline: 3px solid var(--gold); outline-offset: 3px;
+}
+body.font-medium { font-size: 18px; }
+body.font-large { font-size: 21px; }
+body.theme-light {
+  --page-bg: #f4f6f5; --page-text: #17211f;
+  --panel-bg: #fff; --panel-text: #075e53; --panel-border: #8a9b96;
+}
+body.theme-dark {
+  --page-bg: #080a0a; --page-text: #f4f4f4;
+  --panel-bg: #111414; --panel-text: #79f5df; --panel-border: #66736f;
+}
+body.theme-contrast {
+  --page-bg: #000; --page-text: #fff;
+  --panel-bg: #000; --panel-text: #ff0; --panel-border: #fff;
+}
+#accessibilityPanel .pref-note { font-size: .9em; line-height: 1.5; }
+
+
+/* Consola integrada v0.2: piezas táctiles, controles y adaptación */
+:root { --console-brightness: 1; --piece-scale: 1; --symbol-scale: 1; }
+body { display:block; }
+main { margin:0 auto; }
+.console-layout {
+  display:grid; grid-template-columns:minmax(170px, 220px) minmax(0,1fr) minmax(190px,240px);
+  gap:14px; align-items:stretch;
+}
+.console-panel {
+  border:1px solid #28534d; border-radius:10px;
+  background:linear-gradient(150deg,#111d1b 0%,#080d0d 100%);
+  padding:15px; color:#b9d7d1; box-shadow:inset 0 0 20px #0008;
+  min-width:0;
+}
+.console-panel h2,.console-panel h3 {
+  color:var(--turquoise); font-size:12px; letter-spacing:2px;
+  text-transform:uppercase; margin:0 0 12px;
+}
+.console-panel p,.console-panel label {font-size:12px;line-height:1.5}
+.console-panel .pref-row {display:flex;flex-direction:column;gap:6px;margin:13px 0}
+.console-panel input[type="range"] {width:100%;accent-color:var(--turquoise)}
+.console-panel select,.console-panel button,.game-controls button {
+  min-height:40px; border:1px solid #397c73; border-radius:5px;
+  background:linear-gradient(145deg,#172925,#0b1210); color:#c9f9f0;
+  padding:9px 11px; font:inherit; cursor:pointer;
+}
+.console-panel button:hover,.game-controls button:hover {
+  border-color:#f0d995; box-shadow:0 0 12px #52ddc840;
+}
+.console-panel button:focus-visible,.game-controls button:focus-visible,
+.console-panel input:focus-visible,.console-panel select:focus-visible {
+  outline:2px solid var(--gold);outline-offset:3px;
+}
+.stage { min-width:0; border-radius:12px; position:relative; }
+.stage { filter:brightness(var(--console-brightness)); }
+#scene { filter:none; }
+.module-screen {font-size:calc(1rem * var(--symbol-scale,1))}
+.immersive-fallback main {max-width:none;min-height:100vh;padding:8px}
+.immersive-fallback .console-layout {min-height:calc(100vh - 115px)}
+.immersive-fallback .stage {min-height:70vh;border-radius:0}
+#accessibilityPanel {margin-top:14px}
+.console-panel .hint {color:#78938a;font-size:11px}
+.stats {justify-content:center}
+.game-controls {display:none;margin-top:14px;border-radius:8px}
+.console-panel .control-button {width:100%;margin:5px 0}
+#scene g[data-layer] {cursor:pointer;transition:filter .16s ease,transform .16s ease}
+#scene g[data-layer]:hover {filter:brightness(1.3)}
+.stage[data-view="home"] #homeView,.stage[data-view="geometry"] #geometryView,
+.stage[data-view="simon"] #simonView,.stage[data-view="memo"] #memoView,.stage[data-view="referrals"] #referralsView,
+.stage[data-view="sudoku"] #sudokuView,.stage[data-view="words"] #wordsView {display:block}
+.stage #homeView,.stage #geometryView,.stage #simonView,.stage #memoView,
+.stage #sudokuView,.stage #wordsView,.stage #referralsView {display:none}
+.module-screen {min-height:620px;padding:clamp(18px,4vw,44px);position:relative;isolation:isolate;
+  background:radial-gradient(ellipse at 50% 42%,#19352f 0%,#0d1513 65%,#080d0c 100%);}
+.module-screen:before {content:"";position:absolute;inset:0;z-index:-1;opacity:.28;pointer-events:none;
+  background-image:linear-gradient(30deg,transparent 49.6%,#52ddc81a 50%,transparent 50.4%),linear-gradient(150deg,transparent 49.6%,#c5a56818 50%,transparent 50.4%);background-size:44px 44px}
+.home-layout {min-height:530px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center}
+.coin-launch {width:clamp(112px,17vw,178px);aspect-ratio:1;border:0;padding:8px;cursor:pointer;color:#f0d995;
+  clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);
+  background:linear-gradient(145deg,#f4df9d,#87652e 34%,#173b33 36%,#0b1714 68%,#c5a568 70%,#5a4324);filter:drop-shadow(0 0 22px #52ddc855);}
+.coin-launch-inner {height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;
+  clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);border:1px solid #52ddc8;
+  background:radial-gradient(circle,#21483f,#101615 68%);box-shadow:inset 0 0 24px #52ddc855;font-weight:900;letter-spacing:3px}
+.coin-launch-inner strong{font-size:30px;color:#f0d995;text-shadow:0 2px 10px #52ddc8}
+.coin-launch-inner small{font-size:9px;color:#52ddc8}
+.home-layout h2,.module-heading {margin:0;color:#f0d995;letter-spacing:3px;text-transform:uppercase;font-size:clamp(17px,2.2vw,25px)}
+.home-layout p {margin:0;color:#a9c3bb;max-width:620px;line-height:1.55}
+.module-grid {width:min(100%,840px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.module-grid[hidden] {display:none}
+.module-card,.module-button {border:1px solid #427d72;border-radius:8px;background:linear-gradient(145deg,#152622,#0a100f);color:#d8efe9;padding:15px;cursor:pointer;text-align:left;transition:transform .16s,border-color .16s,box-shadow .16s}
+.module-card:hover,.module-button:hover {transform:translateY(-2px);border-color:#f0d995;box-shadow:0 7px 24px #0007,0 0 14px #52ddc820}
+.module-card strong {display:block;color:#52ddc8;font-size:12px;letter-spacing:1.4px;margin-bottom:6px}
+.module-card span {font-size:11px;line-height:1.4;color:#a9c3bb}
+.module-toolbar {display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 18px}
+.module-toolbar .module-button {padding:10px 13px;font-size:11px;text-align:center}
+.module-content {max-width:760px;margin:0 auto}
+.simon-board {width:min(calc(100% / var(--piece-scale,1)),510px);margin:40px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:12px;aspect-ratio:1;transform:scale(var(--piece-scale,1));transform-origin:top center}
+.simon-pad {border:2px solid #c5a568;border-radius:28px;min-height:110px;cursor:pointer;opacity:.78;box-shadow:inset 0 0 20px #0008;transition:filter .12s,opacity .12s,transform .12s}
+.simon-pad[data-pad="0"]{background:#247e70}.simon-pad[data-pad="1"]{background:#a57d37}.simon-pad[data-pad="2"]{background:#286052}.simon-pad[data-pad="3"]{background:#885a28}
+.simon-pad.active {opacity:1;filter:brightness(1.9);transform:scale(.98);box-shadow:0 0 28px #f0d995,inset 0 0 24px #fff8}
+.module-status {text-align:center;color:#f0d995;min-height:24px;font-weight:700;letter-spacing:1px}
+.memo-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:650px;margin:28px auto}
+.memo-card {aspect-ratio:1;border:1px solid #52ddc8;border-radius:12px;background:linear-gradient(145deg,#17352e,#0d1513);color:#f0d995;font-size:calc(clamp(28px,5vw,52px) * var(--piece-scale,1));cursor:pointer;box-shadow:inset 0 0 18px #0008}
+.memo-card.revealed,.memo-card.matched {background:linear-gradient(145deg,#c5a568,#75592c);color:#101615}
+.memo-card.matched {border-color:#52ddc8;box-shadow:0 0 15px #52ddc855;cursor:default}
+.sudoku-wrap {max-width:500px;margin:22px auto}
+.sudoku-grid {display:grid;grid-template-columns:repeat(9,minmax(0,1fr));border:2px solid #c5a568;aspect-ratio:1}
+.sudoku-cell {min-width:0;aspect-ratio:1;text-align:center;border:1px solid #33564f;background:#0d1714;color:#52ddc8;font-size:calc(clamp(13px,2.5vw,22px) * var(--symbol-scale,1));padding:0;outline:none}
+.sudoku-cell:nth-child(3n){border-right:2px solid #c5a568}.sudoku-cell.box-bottom{border-bottom:2px solid #c5a568}
+.sudoku-cell.given {color:#f0d995;font-weight:800;background:#17241f}.sudoku-cell.invalid{background:#542b29;color:#fff}
+.module-actions {display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0}
+.module-actions select,.module-actions input {min-height:40px;padding:8px 10px;background:#101c18;color:#e9f5f0;border:1px solid #397c73;border-radius:5px}
+.hex-board {width:min(100%,660px);aspect-ratio:1.12;position:relative;margin:24px auto;background:radial-gradient(circle,#17332d55,transparent 68%)}
+.hex-letter {position:absolute;width:calc(9.5% * var(--piece-scale,1));aspect-ratio:1;border-radius:50%;border:1px solid #c5a568;background:linear-gradient(145deg,#1c3b34,#0b1210);color:#f0d995;font-weight:800;font-size:calc(clamp(12px,2vw,20px) * var(--symbol-scale,1));transform:translate(-50%,-50%);cursor:pointer;box-shadow:0 3px 10px #0008}
+.hex-letter.selected{background:#52ddc8;color:#101615;box-shadow:0 0 17px #52ddc8}.hex-letter.consumed{background:#28342f;color:#6d837a;opacity:.45;cursor:default;text-decoration:line-through}
+.word-list {display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.word-chip{border:1px solid #397c73;padding:6px 10px;border-radius:20px;color:#bddbd3;font-size:12px}.word-chip.found{color:#52ddc8;text-decoration:line-through}
+.module-icon{color:#c5a568;font-size:20px;margin-right:5px}
+.referral-card{max-width:680px;margin:18px auto;padding:22px;border:1px solid #c5a568;border-radius:12px;background:#101c19;text-align:center}
+.referral-card h2{color:#52ddc8;letter-spacing:1px}
+.referral-card p{line-height:1.6}
+#referralCode{font-size:clamp(22px,4vw,32px);font-weight:900;color:#c5a568;letter-spacing:2px}
+.referral-rule{font-size:clamp(20px,4vw,30px);font-weight:900;color:#c5a568}
+.referral-card .module-button{margin:12px auto}
+@media(max-width:680px){.module-screen{min-height:500px;padding:16px}.home-layout{min-height:470px}.module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.module-card{padding:12px}.simon-board{margin-top:22px}.memo-grid{gap:7px}.module-toolbar{margin-bottom:10px}}
+@media(max-width:1050px) {
+  .console-layout {grid-template-columns:minmax(0,1fr) minmax(0,2.2fr)}
+  .console-layout .left-panel {grid-column:1;grid-row:1}
+  .console-layout .stage {grid-column:2;grid-row:1 / span 2}
+  .console-layout .right-panel {grid-column:1;grid-row:2}
+}
+@media(max-width:680px) {
+  main{padding:10px}
+  .console-layout {display:flex;flex-direction:column;gap:10px}
+  .console-layout .stage {order:2}
+  .console-layout .left-panel {order:1}
+  .console-layout .right-panel {order:3}
+  .console-panel {padding:12px}
+  .console-panel .settings-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .console-panel .pref-row {margin:5px 0}
+  .console-panel h2 {margin-bottom:8px}
+  header {margin-bottom:12px}
+}
+@media(orientation:landscape) and (max-height:650px) {
+  main {padding:8px}
+  header .eyebrow {font-size:9px}
+  h1 {font-size:clamp(18px,2.5vw,30px)}
+  .console-layout {grid-template-columns:minmax(145px,190px) minmax(0,1fr) minmax(160px,205px);gap:8px}
+  .console-panel {padding:9px}
+  .console-panel p,.console-panel label {font-size:11px}
+}
+
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div>
+    <div class="eyebrow">SQ-ONE Research Labs · Original puzzle concept</div>
+    <h1>GENESIS <span>CHALLENGE</span></h1>
+  </div>
+  <div class="status">◆ FREAKCOIN / GAME MODULES</div>
+</header>
+
+<div class="console-layout">
+<aside class="console-panel left-panel" aria-label="Estado y personalización">
+  <h2>Consola · ajustes</h2>
+  <div class="pref-row"><label for="pieceSize">Tamaño de piezas</label><input id="pieceSize" type="range" min="85" max="120" value="100"><output id="pieceSizeOut">100%</output></div>
+  <div class="pref-row"><label for="symbolSize">Tamaño de letras y números</label><input id="symbolSize" type="range" min="80" max="140" value="100"><output id="symbolSizeOut">100%</output></div>
+  <div class="pref-row"><label for="brightnessControl">Luminosidad de la consola</label><input id="brightnessControl" type="range" min="45" max="130" value="100"><output id="brightnessOut">100%</output></div>
+  <div class="pref-row"><label for="soundToggle">Sonido</label><button id="soundToggle" type="button" aria-pressed="false">SONIDO: DESACTIVADO</button></div>
+  <div class="pref-row"><label for="volumeControl">Volumen</label><input id="volumeControl" type="range" min="0" max="100" value="70"><output id="volumeOut">70%</output></div>
+  <p class="hint">La luminosidad regula los efectos visuales de la consola, no el brillo físico de la pantalla.</p>
+</aside>
+<div class="stage" id="gameStage" data-view="home">
+<section id="homeView" class="module-screen">
+  <div class="home-layout">
+    <button class="coin-launch" id="coinLaunch" type="button" aria-label="Entrar a la selección de juegos FREAKCOIN">
+      <span class="coin-launch-inner"><strong>FC</strong><small>GENESIS / FREAKCOIN</small></span>
+    </button>
+    <h2>GENESIS CHALLENGE</h2>
+    <p id="homePrompt">Tocá la moneda para entrar a la consola y elegir un módulo.</p>
+    <div class="module-grid" id="moduleGrid" hidden>
+      <button class="module-card" data-module="simon"><strong><span class="module-icon">◈</span>SIMON</strong><span>Memoria secuencial de luces y tonos.</span></button>
+      <button class="module-card" data-module="memo"><strong><span class="module-icon">⬡</span>MEMO TEST</strong><span>Emparejá figuras sólidas con sus contornos.</span></button>
+      <button class="module-card" data-module="sudoku"><strong><span class="module-icon">▦</span>SUDOKU</strong><span>Completá una cuadrícula lógica 9 × 9.</span></button>
+      <button class="module-card" data-module="words"><strong><span class="module-icon">⬢</span>SOPA DE LETRAS</strong><span>Conectá letras y encontrá palabras ocultas.</span></button>
+<button class="module-card" type="button" id="referralsLaunch"><strong><span class="module-icon">◇</span>INVITAR AMIGOS</strong><span>Compartí GENESIS y acumulá méritos.</span></button>
+
+    </div>
+  </div>
+</section>
+<section id="referralsView" class="module-screen">
+  <div class="module-toolbar">
+    <button type="button" class="module-button" id="referralsBack">← MÓDULOS</button>
+    <h2 class="module-heading">GENESIS INVITATION NETWORK</h2>
+  </div>
+  <div class="module-content">
+    <p class="module-status">INVITÁ AMIGOS · CONSTRUÍ TU RED</p>
+    <div class="referral-card">
+      <h2>MI CÓDIGO PERSONAL</h2>
+      <p id="referralCode">Generando código...</p>
+      <p>Compartí tu enlace personal para invitar nuevos jugadores.</p>
+      <button type="button" class="module-button" id="referralShare">COMPARTIR INVITACIÓN</button>
+      <p id="referralStatus" aria-live="polite">Preparando invitación...</p>
+    </div>
+    <div class="referral-card">
+      <h2>MI ACTIVIDAD</h2>
+      <p>Intentos de compartir: <strong id="referralShares">0</strong></p>
+      <p>Visitas registradas en este navegador: <strong id="referralVisits">0</strong></p>
+      <p>Referidos pendientes de validación: <strong id="referralPending">0</strong></p>
+      <p>Referidos válidos confirmados: <strong id="referralValid">0</strong></p>
+    </div>
+    <div class="referral-card">
+      <h2>REGLA DE RECOMPENSA</h2>
+      <p class="referral-rule">10 REFERIDOS VÁLIDOS = 1 FREAKCOIN</p>
+      <p>Un referido válido debe ingresar mediante tu enlace, quedar registrado y completar al menos un desafío.</p>
+      <p>Los méritos de esta demostración son locales. La acreditación real requiere validación centralizada y activación oficial del programa.</p>
+    </div>
+  </div>
+</section>
+<section id="geometryView" class="module-screen">
+<svg id="scene" viewBox="0 0 1200 760"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-label="Genesis Challenge: tres hexágonos triangulados y medallón FREAKCOIN">
+<defs>
+  <radialGradient id="core">
+    <stop offset="0" stop-color="#21473f"/>
+    <stop offset=".65" stop-color="#10221e"/>
+    <stop offset="1" stop-color="#101615"/>
+  </radialGradient>
+  <linearGradient id="goldmetal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f4df9d"/>
+    <stop offset=".48" stop-color="#C5A568"/>
+    <stop offset="1" stop-color="#71542a"/>
+  </linearGradient>
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="4" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <pattern id="microgrid" width="24" height="24" patternUnits="userSpaceOnUse">
+    <path d="M24 0H0V24" fill="none" stroke="#52DDC8" stroke-opacity=".07" stroke-width=".6"/>
+  </pattern>
+</defs>
+
+<rect width="1200" height="760" fill="url(#microgrid)"/>
+<circle cx="600" cy="385" r="350" fill="url(#core)" opacity=".8"/>
+<circle cx="600" cy="385" r="345" fill="none" stroke="#52DDC8" stroke-opacity=".18" stroke-dasharray="2 9"/>
+<circle cx="600" cy="385" r="325" fill="none" stroke="#C5A568" stroke-opacity=".24" stroke-dasharray="1 12"/>
+
+<g id="burst" opacity=".9"></g>
+<g id="outer"></g>
+<g id="middle"></g>
+<g id="inner"></g>
+<g id="coin" transform="translate(600 385) scale(.62) translate(-600 -385)"></g>
+<g id="labels"></g>
+
+<g fill="#78938a" font-family="Arial,sans-serif" font-size="10" letter-spacing="2">
+  <text x="35" y="38">G.C. / 001</text>
+  <text x="1165" y="38" text-anchor="end">TRIADIC PUZZLE SYSTEM</text>
+  <text x="35" y="722">LAYER 01 — LETTERS</text>
+  <text x="600" y="722" text-anchor="middle">LAYER 02 — NUMBERS</text>
+  <text x="1165" y="722" text-anchor="end">LAYER 03 — SHAPES</text>
+</g>
+</svg>
+</section>
+<section id="simonView" class="module-screen">
+  <div class="module-toolbar"><button type="button" class="module-button" data-go-home>← MÓDULOS</button><h2 class="module-heading">SIMON / SECUENCIA</h2><button type="button" class="module-button" id="simonRestart">REINICIAR</button></div>
+  <div class="module-content"><p id="simonStatusText" class="module-status" aria-live="polite">PULSÁ INICIAR PARA COMENZAR</p>
+    <div class="simon-board" id="simonBoard" aria-label="Panel de cuatro colores SIMON">
+      <button class="simon-pad" data-pad="0" aria-label="Turquesa"></button><button class="simon-pad" data-pad="1" aria-label="Oro"></button>
+      <button class="simon-pad" data-pad="2" aria-label="Verde"></button><button class="simon-pad" data-pad="3" aria-label="Bronce"></button>
+    </div><div class="module-actions"><button type="button" class="module-button" id="simonStartControl">INICIAR PARTIDA</button></div>
+  </div>
+</section>
+<section id="memoView" class="module-screen">
+  <div class="module-toolbar"><button type="button" class="module-button" data-go-home>← MÓDULOS</button><h2 class="module-heading">MEMO TEST</h2><button type="button" class="module-button" id="memoRestart">REINICIAR</button></div>
+  <div class="module-content"><p id="memoStatus" class="module-status" aria-live="polite">Encontrá las seis parejas.</p><div class="memo-grid" id="memoGrid" aria-label="Tablero de Memo Test"></div></div>
+</section>
+<section id="sudokuView" class="module-screen">
+  <div class="module-toolbar"><button type="button" class="module-button" data-go-home>← MÓDULOS</button><h2 class="module-heading">SUDOKU / 9 × 9</h2><button type="button" class="module-button" id="sudokuRestart">NUEVO TABLERO</button></div>
+  <div class="module-content"><div class="module-actions"><label for="sudokuLevel">Dificultad</label><select id="sudokuLevel"><option value="45">Iniciación · 45 pistas</option><option value="35" selected>Estándar · 35 pistas</option><option value="28">Avanzado · 28 pistas</option></select><button type="button" class="module-button" id="sudokuCheck">COMPROBAR</button></div>
+    <p id="sudokuStatus" class="module-status" aria-live="polite">Completá filas, columnas y bloques con números del 1 al 9.</p><div class="sudoku-wrap"><div class="sudoku-grid" id="sudokuGrid" role="grid" aria-label="Sudoku 9 por 9"></div></div></div>
+</section>
+<section id="wordsView" class="module-screen">
+  <div class="module-toolbar"><button type="button" class="module-button" data-go-home>← MÓDULOS</button><h2 class="module-heading">SOPA DE LETRAS</h2><button type="button" class="module-button" id="wordsRestart">NUEVA SOPA</button></div>
+  <div class="module-content"><div class="module-actions"><label for="wordLevel">Dificultad</label><select id="wordLevel"><option value="2">Iniciación · 2 palabras</option><option value="3" selected>Estándar · 3 palabras</option><option value="4">Avanzado · 4 palabras</option></select><button type="button" class="module-button" id="wordUndo">LIMPIAR SELECCIÓN</button></div>
+    <p id="wordsStatus" class="module-status" aria-live="polite">Seleccioná letras vecinas en secuencia.</p><div class="word-list" id="wordList"></div><div id="hexBoard" class="hex-board" aria-label="Tablero de letras hexagonal"></div></div>
+</section>
+</div>
+<aside class="console-panel right-panel" aria-label="Instrucciones y controles">
+  <h2 id="moduleSideTitle">Genesis Challenge</h2>
+  <p id="moduleSideDescription">Entrá por la moneda FREAKCOIN y elegí una experiencia.</p>
+  <h3 id="moduleHowTitle">Entrada</h3>
+  <p id="moduleHowSteps">Tocá la moneda y elegí una experiencia.</p>
+  <button class="control-button" type="button" id="fullscreenToggle">VISTA INMERSIVA</button>
+  <p class="hint">En horizontal, los paneles se ubican a los lados. En vertical, pasan arriba y abajo.</p>
+</aside>
+</div>
+
+<section id="accessibilityPanel" aria-labelledby="accessibilityTitle">
+  <h2 id="accessibilityTitle">PREFERENCIAS Y ACCESIBILIDAD</h2>
+  <div class="pref-row">
+    <label for="fontPreference">Tamaño del texto</label>
+    <select id="fontPreference">
+      <option value="normal">Actual</option>
+      <option value="medium">Mediano</option>
+      <option value="large">Grande</option>
+    </select>
+  </div>
+  <div class="pref-row">
+    <label for="themePreference">Apariencia</label>
+    <select id="themePreference">
+      <option value="original">Original SQ-ONE</option>
+      <option value="light">Clara</option>
+      <option value="dark">Oscura</option>
+      <option value="contrast">Alto contraste</option>
+    </select>
+  </div>
+  <p class="pref-note">
+    Las preferencias cambian la presentación, no las reglas de la partida.
+    El audio sintético está integrado; activá el sonido desde su control.
+  </p>
+  <button type="button" id="resetPreferences">RESTABLECER PREFERENCIAS</button>
+</section>
+
+<section class="game-controls" id="geometryControls">
+<div class="stats"><span>MOVIMIENTOS <b id="moves">0</b></span>
+<span>ERRORES <b id="errors">0 / 3</b></span></div>
+<p id="gameStatus">Observá el diseño: la partida comienza en unos segundos.</p>
+<button id="checkGame">COMPROBAR</button>
+<button id="newGame">NUEVA PARTIDA</button>
+</section>
+<footer>
+  <span>THREE LAYERS · ONE HIDDEN RELATIONSHIP</span>
+  <span>FREAKCOIN GAME CONSOLE · 2026</span>
+  <span style="color:#C5A568">VISUAL REDESIGN · ENGINE PRESERVED</span>
+</footer>
+</main>
+
+
+<script>
+(function () {
+  "use strict";
+  const fontSelect = document.getElementById("fontPreference");
+  const themeSelect = document.getElementById("themePreference");
+  const resetButton = document.getElementById("resetPreferences");
+  if (!fontSelect || !themeSelect || !resetButton) return;
+
+  function save(key, value) {
+    try { localStorage.setItem("genesis." + key, value); } catch (_) {}
+  }
+  function read(key, allowed, fallback) {
+    try {
+      const value = localStorage.getItem("genesis." + key);
+      return allowed.includes(value) ? value : fallback;
+    } catch (_) { return fallback; }
+  }
+  function applyFont(value) {
+    document.body.classList.remove("font-medium", "font-large");
+    if (value === "medium") document.body.classList.add("font-medium");
+    if (value === "large") document.body.classList.add("font-large");
+    fontSelect.value = value;
+    save("font", value);
+  }
+  function applyTheme(value) {
+    document.body.classList.remove("theme-light", "theme-dark", "theme-contrast");
+    if (value === "light") document.body.classList.add("theme-light");
+    if (value === "dark") document.body.classList.add("theme-dark");
+    if (value === "contrast") document.body.classList.add("theme-contrast");
+    themeSelect.value = value;
+    save("theme", value);
+  }
+  fontSelect.addEventListener("change", () => applyFont(fontSelect.value));
+  themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
+  resetButton.addEventListener("click", () => {
+    applyFont("normal");
+    applyTheme("original");
+  });
+  applyFont(read("font", ["normal", "medium", "large"], "normal"));
+  applyTheme(read("theme", ["original", "light", "dark", "contrast"], "original"));
+})();
+</script>
+
+<script src="motor-genesis.browser.js"></script>
+<script src="diamond-security/diamond-unbunker.js"></script>
+
+<script>
+const NS = "http://www.w3.org/2000/svg";
+const $ = id => document.getElementById(id);
+const cx = 600, cy = 385;
+
+function el(tag, attrs = {}, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const [k,v] of Object.entries(attrs)) n.setAttribute(k,v);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+function point(r, a) {
+  const t = a * Math.PI / 180;
+  return [cx + r * Math.cos(t), cy + r * Math.sin(t)];
+}
+function hex(r) {
+  return Array.from({length:6}, (_,i) => point(r, -90 + i*60));
+}
+function boundary(r) {
+  const v = hex(r), p = [];
+  for (let i=0; i<6; i++) {
+    p.push(v[i]);
+    p.push([
+      (v[i][0]+v[(i+1)%6][0])/2,
+      (v[i][1]+v[(i+1)%6][1])/2
+    ]);
+  }
+  return p;
+}
+function poly(points, attrs, parent) {
+  return el("polygon", {
+    points: points.map(p => p.map(n=>n.toFixed(2)).join(",")).join(" "),
+    ...attrs
+  }, parent);
+}
+function ring(parent, outerR, innerR, color, labelSet, layer) {
+  const a = boundary(outerR), b = boundary(innerR);
+  for (let i=0; i<12; i++) {
+    const j = (i+1)%12;
+    const A=a[i], B=a[j], C=b[j], D=b[i];
+    const fills = ["#172925","#13221f","#1b302a","#101c19"];
+    poly([A,B,D], {
+      fill:fills[i%4],
+      stroke:color,
+      "stroke-opacity":".7",
+      "stroke-width":"1.2"
+    }, parent);
+    poly([B,C,D], {
+      fill:i%2 ? "#192a25" : "#101b19",
+      stroke:color,
+      "stroke-opacity":".6",
+      "stroke-width":"1.2"
+    }, parent);
+  }
+  // Six readable symbols, centered on the six hexagon vertices.
+  for (let i=0; i<6; i++) {
+    const angle = -90+i*60;
+    const r=(outerR+innerR)/2;
+    const [x,y]=point(r,angle);
+    const g=el("g",{},parent);
+    const size = layer===3 ? 23 : 26;
+    const tri = [
+      [x, y-size], [x+size*.88, y+size*.55], [x-size*.88, y+size*.55]
+    ];
+    poly(tri.map(([px,py])=>[px+2,py+4]), {
+      fill:"#020605", stroke:"#020605", "stroke-width":"5"
+    },g);
+    poly(tri, {
+      fill:layer===1?"#102c29":"#28241b",
+      stroke:color, "stroke-width":"2.2", filter:"url(#glow)"
+    },g);
+    const innerTri = [[x,y-size+6],[x+size*.65,y+size*.35],[x-size*.65,y+size*.35]];
+    poly(innerTri,{fill:"none",stroke:color,"stroke-opacity":".55","stroke-width":"1"},g);
+    const t=el("text",{
+      x,y:y+7,"text-anchor":"middle",
+      fill:"#f0f5ef","font-size":layer===1?"17":"18",
+      "font-weight":"700","font-family":"Arial,sans-serif",
+      "paint-order":"stroke","stroke":"#08100e","stroke-width":"1.4"
+    },g);
+    t.textContent=labelSet[i];
+    g.dataset.layer=layer; g.dataset.expected=labelSet[i];
+    g.dataset.value=labelSet[i]; g.style.cursor="pointer";
+    g.addEventListener("click",()=>selectPiece(g));
+  }
+  poly(hex(outerR),{fill:"none",stroke:color,"stroke-width":"2.5"},parent);
+  poly(hex(innerR),{fill:"none",stroke:color,"stroke-width":"2"},parent);
+}
+ring($("outer"),300,245,"#52DDC8",["A","B","C","D","E","F"],1);
+ring($("middle"),230,177,"#C5A568",["1","2","3","4","5","6"],2);
+ring($("inner"),170,115,"#C5A568",["◆","◇","▲","△","●","○"],3);
+
+// Fine radial connectors: the layers read as one coordinated mechanism.
+for(let i=0;i<6;i++){
+  const a=-90+i*60, p1=point(245,a), p2=point(230,a);
+  el("line",{x1:p1[0],y1:p1[1],x2:p2[0],y2:p2[1],
+    stroke:"#e4d2a1","stroke-width":"1.4","stroke-opacity":".8"},$("labels"));
+}
+
+// Central triangular medallion: assembled geometry, not a pasted coin.
+const coin=$("coin");
+poly(hex(163),{fill:"#0b1512",stroke:"url(#goldmetal)","stroke-width":"4"},coin);
+poly(hex(151),{fill:"#15352e",stroke:"#52DDC8","stroke-width":"2"},coin);
+poly(hex(137),{fill:"none",stroke:"#C5A568","stroke-width":"1.5"},coin);
+poly(hex(123),{fill:"none",stroke:"#52DDC8","stroke-opacity":".75","stroke-width":"1"},coin);
+
+// Interlocking triangular marquetry facets.
+const vertices=hex(119);
+for(let i=0;i<6;i++){
+  const a=vertices[i], b=vertices[(i+1)%6];
+  const m=point(63,-90+i*60+30);
+  poly([a,b,[cx,cy]],{
+    fill:i%2?"#1a453b":"#102720",
+    stroke:"#C5A568","stroke-width":"1.2"
+  },coin);
+  poly([a,b,m],{
+    fill:i%2?"#214c40":"#15352d",
+    stroke:"#52DDC8","stroke-opacity":".8","stroke-width":"1"
+  },coin);
+}
+
+// Six-point star and secondary star connections.
+for(let i=0;i<12;i++){
+  const a=-90+i*30;
+  const p=point(i%2?47:91,a);
+  const q=point(i%2?91:47,a+30);
+  el("line",{x1:p[0],y1:p[1],x2:q[0],y2:q[1],
+    stroke:"#C5A568","stroke-width":"1.3","stroke-opacity":".9"},coin);
+}
+const starOuter=Array.from({length:12},(_,i)=>point(i%2?53:91,-90+i*30));
+poly(starOuter,{fill:"none",stroke:"#e2c77f","stroke-width":"1.5"},coin);
+poly(hex(42),{fill:"#101c18",stroke:"#C5A568","stroke-width":"2"},coin);
+el("circle",{cx,cy,r:30,fill:"#17372f",stroke:"#52DDC8","stroke-width":"1.5"},coin);
+el("circle",{cx,cy,r:23,fill:"none",stroke:"#C5A568","stroke-width":"1"},coin);
+
+// Coin name and tiny geometric center mark.
+const name=el("text",{x:cx,y:cy+7,"text-anchor":"middle",
+  fill:"#f0d995","font-family":"Arial,sans-serif",
+  "font-size":"10","font-weight":"800","letter-spacing":"1.2"},coin);
+name.textContent="FC";
+const simonState = {
+  sequence: [], inputIndex: 0, active: false,
+  accepting: false, errors: 0, round: 0, runId: 0, timers: new Set()
+};
+
+const simonCore = el("g", {id:"simonCore"}, $("scene"));
+const simonColors = ["#52DDC8","#C5A568","#3F8C80","#B98238"];
+const simonPads = [];
+const simonPositions = [
+  [586,371],[614,371],[586,399],[614,399]
+];
+
+function simonMessage(text) {
+  simonStatus.textContent = text;
+  const status = $("simonStatusText");
+  if (status) status.textContent = text;
+}
+
+function clearSimonTimers() {
+  simonState.timers.forEach(timer => clearTimeout(timer));
+  simonState.timers.clear();
+}
+
+function scheduleSimon(callback, delay) {
+  const timer = setTimeout(() => {
+    simonState.timers.delete(timer);
+    callback();
+  }, delay);
+  simonState.timers.add(timer);
+  return timer;
+}
+
+function simonReset() {
+  simonState.runId++;
+  clearSimonTimers();
+  simonState.sequence = [];
+  simonState.inputIndex = 0;
+  simonState.active = false;
+  simonState.accepting = false;
+  simonState.errors = 0;
+  simonState.round = 0;
+  simonPads.forEach((_, index) => simonLight(index, false));
+  document.querySelectorAll(".simon-pad").forEach(pad => pad.classList.remove("active"));
+  simonMessage("SIMON / PULSÁ EL CENTRO");
+}
+
+const simonStatus = el("text", {
+  x:cx, y:425, "text-anchor":"middle",
+  fill:"#52DDC8", "font-size":"9",
+  "font-family":"Arial,sans-serif", "letter-spacing":"1"
+}, simonCore);
+simonMessage("SIMON / PULSÁ EL CENTRO");
+
+function simonLight(index, on) {
+  const pad = simonPads[index];
+  if (!pad) return;
+  pad.setAttribute("fill", on ? "#FFFFFF" : simonColors[index]);
+  pad.setAttribute("fill-opacity", on ? "1" : ".68");
+  pad.setAttribute("stroke", on ? "#FFFFFF" : simonColors[index]);
+  pad.setAttribute("stroke-width", on ? "3" : "1.5");
+  pad.setAttribute("filter", on ? "url(#glow)" : "");
+  const modulePad = document.querySelector('.simon-pad[data-pad="' + index + '"]');
+  if (modulePad) modulePad.classList.toggle("active", on);
+  if (on && window.genesisPlaySound) {
+    window.genesisPlaySound("simon" + index);
+  }
+}
+
+function simonPlaySequence() {
+  if (!simonState.active) return;
+  simonState.accepting = false;
+  simonState.inputIndex = 0;
+  const run = simonState.runId;
+  const delay = 620;
+
+  simonMessage("RONDA " + simonState.round + " / ERRORES " + simonState.errors);
+
+  simonState.sequence.forEach((index, n) => {
+    scheduleSimon(() => {
+      if (run !== simonState.runId || !simonState.active) return;
+      simonLight(index, true);
+      scheduleSimon(() => {
+        if (run === simonState.runId) simonLight(index, false);
+      }, 300);
+    }, 500 + n * delay);
+  });
+
+  scheduleSimon(() => {
+    if (run !== simonState.runId || !simonState.active) return;
+    simonState.accepting = true;
+    simonMessage("REPETÍ LA SECUENCIA / RONDA " + simonState.round);
+  }, 500 + simonState.sequence.length * delay);
+}
+
+function simonStart() {
+  clearSimonTimers();
+  simonPads.forEach((_, index) => simonLight(index, false));
+  document.querySelectorAll(".simon-pad").forEach(pad => pad.classList.remove("active"));
+  simonState.runId++;
+  simonState.active = true;
+  simonState.accepting = false;
+  simonState.errors = 0;
+  simonState.round = 1;
+  simonState.sequence = [Math.floor(Math.random() * 4)];
+  simonPlaySequence();
+}
+
+function simonInput(index) {
+  if (!simonState.active) {
+    simonStart();
+    return;
+  }
+  if (!simonState.accepting) return;
+
+  simonLight(index, true);
+  scheduleSimon(() => simonLight(index, false), 180);
+
+  if (index !== simonState.sequence[simonState.inputIndex]) {
+    simonState.errors++;
+    simonState.accepting = false;
+    simonState.runId++;
+    const run = simonState.runId;
+    simonMessage("ERROR SIMON " + simonState.errors + " / REINICIANDO");
+    if (window.genesisPlaySound) window.genesisPlaySound("error");
+
+    scheduleSimon(() => {
+      if (run !== simonState.runId || !simonState.active) return;
+      simonState.sequence = [Math.floor(Math.random() * 4)];
+      simonState.round = 1;
+      simonPlaySequence();
+    }, 800);
+    return;
+  }
+
+  simonState.inputIndex++;
+  if (simonState.inputIndex === simonState.sequence.length) {
+    simonState.accepting = false;
+    simonState.sequence.push(Math.floor(Math.random() * 4));
+    simonState.round = simonState.sequence.length;
+    const run = simonState.runId;
+    simonMessage("CORRECTO / PREPARANDO RONDA " + simonState.round);
+    scheduleSimon(() => {
+      if (run === simonState.runId) simonPlaySequence();
+    }, 700);
+  }
+}
+
+simonPositions.forEach((pos, index) => {
+  const pad = el("circle", {
+    id:"simonPad" + index,
+    cx:pos[0], cy:pos[1], r:11,
+    fill:simonColors[index], "fill-opacity":".68",
+    stroke:simonColors[index], "stroke-width":"1.5",
+    cursor:"pointer", filter:"url(#glow)"
+  }, simonCore);
+  pad.addEventListener("click", event => {
+    event.stopPropagation();
+    simonInput(index);
+  });
+  simonPads.push(pad);
+});
+
+const simonStartButton = el("circle", {
+  id:"simonStart", cx:cx, cy:cy, r:6,
+  fill:"#101615", stroke:"#F0D995",
+  "stroke-width":"1.5", cursor:"pointer"
+}, simonCore);
+
+const simonStartText = el("text", {
+  x:cx, y:cy+2.5, "text-anchor":"middle",
+  fill:"#F0D995", "font-size":"7",
+  "font-family":"Arial,sans-serif",
+  "font-weight":"700", "pointer-events":"none"
+}, simonCore);
+simonStartText.textContent = "S";
+
+simonStartButton.addEventListener("click", event => {
+  event.stopPropagation();
+  simonStart();
+});
+
+// Controlled outward triangles, a static illustration of the victory reveal.
+const burst=$("burst");
+for(let i=0;i<24;i++){
+  const angle=-90+i*15;
+  const r=330+(i%3)*20;
+  const p=point(r,angle);
+  const size=5+(i%4)*2;
+  const a=point(size,angle+145), b=point(size*1.7,angle+225);
+  poly([[p[0],p[1]],a,b],{
+    fill:i%2?"#52DDC8":"#C5A568",
+    "fill-opacity":i%3===0?".85":".38",
+    stroke:i%2?"#52DDC8":"#C5A568",
+    "stroke-width":".8"
+  },burst);
+}
+const labels=$("labels");
+el("text",{x:600,y:73,"text-anchor":"middle",fill:"#52DDC8",
+  "font-size":"11","letter-spacing":"5","font-family":"Arial,sans-serif"},labels)
+  .textContent="THE KALEIDOSCOPE RULE";
+el("text",{x:600,y:96,"text-anchor":"middle",fill:"#78938a",
+  "font-size":"9","letter-spacing":"2","font-family":"Arial,sans-serif"},labels)
+  .textContent="NOTHING IS WHAT IT SEEMS";
+el("text",{x:600,y:576,"text-anchor":"middle",fill:"#C5A568",
+  "font-size":"15","font-weight":"700","letter-spacing":"5",
+  "font-family":"Arial,sans-serif"},labels).textContent="FREAKCOIN";
+el("text",{x:600,y:596,"text-anchor":"middle",fill:"#78938a",
+  "font-size":"9","letter-spacing":"3","font-family":"Arial,sans-serif"},labels)
+  .textContent="GEOMETRIC CORE / CONCEPT REVEAL";
+
+// Lógica de GENESIS CHALLENGE
+const game={moves:0,errors:0,selected:null,locked:true,completed:false};
+const genesisEngine = new window.GenesisEngine();
+const gameTimers = new Set();
+function scheduleGame(callback, delay) {
+  const timer = setTimeout(() => { gameTimers.delete(timer); callback(); }, delay);
+  gameTimers.add(timer);
+  return timer;
+}
+function clearGameTimers() {
+  gameTimers.forEach(timer => clearTimeout(timer));
+  gameTimers.clear();
+}
+
+// DIAMOND se inicializa como módulo independiente.
+// Inicializarlo NO activa una kripto ni habilita celdas.
+if (!window.DiamondSecurity ||
+    typeof window.DiamondSecurity.DiamondUnBunker !== "function") {
+  throw new Error("No se pudo cargar DIAMOND Un-Bunker.");
+}
+
+const diamondBlock = new window.DiamondSecurity.DiamondUnBunker();
+const diamondStatus = diamondBlock.getStatus();
+
+console.info("DIAMOND Un-Bunker inicializado:", {
+  totalUnits: diamondStatus.totalUnits,
+  neighborReciprocity: diamondStatus.neighborReciprocity,
+  hexagonalClosure: diamondStatus.hexagonalClosure,
+  cryptographicValidation: diamondStatus.cryptographicValidation
+});
+
+// Estado deliberadamente separado del acceso al juego y de la kripto.
+const cryptoActivation = {
+  gameEnabled: false,
+  cryptoActivated: false,
+  stages: {
+    birth: false,
+    accreditation: false,
+    possession: false,
+    diamond: false
+  }
+};
+function pieces(layer){
+ const id=layer===1?"outer":layer===2?"middle":"inner";
+ return [...$(id).querySelectorAll("g[data-layer]")];
+}
+function allPieces(){return [1,2,3].flatMap(pieces);}
+function paint(g){g.querySelector("text").textContent=g.dataset.value;}
+function clearSelection(){
+ allPieces().forEach(g=>{
+  const p=g.querySelectorAll("polygon")[1];
+  if(p){
+   p.setAttribute("stroke",g.dataset.layer==="1"?"#52DDC8":"#C5A568");
+   p.setAttribute("stroke-width","2.2");
+  }
+ });
+ game.selected=null;
+}
+function selectPiece(g){
+ if(game.locked)return;
+ if(!game.selected){
+  game.selected=g;
+  const p=g.querySelectorAll("polygon")[1];
+  if(p){p.setAttribute("stroke","#fff");p.setAttribute("stroke-width","3");}
+  $("gameStatus").textContent="Elegí otra pieza del mismo anillo.";
+  return;
+ }
+ const a=game.selected;
+ if(a===g){clearSelection();return;}
+ if(a.dataset.layer!==g.dataset.layer){
+  clearSelection();$("gameStatus").textContent="Elegí piezas del mismo anillo.";return;
+ }
+ const v=a.dataset.value;a.dataset.value=g.dataset.value;g.dataset.value=v;
+ paint(a);paint(g);game.moves++;$("moves").textContent=game.moves;
+  if(window.genesisPlaySound)window.genesisPlaySound("swap");
+ clearSelection();$("gameStatus").textContent="Intercambio realizado.";
+}
+function shuffleLayer(layer){
+ const a=pieces(layer),v=a.map(g=>g.dataset.value);
+ for(let i=v.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));[v[i],v[j]]=[v[j],v[i]];
+ }
+ if(v.every((x,i)=>x===a[i].dataset.expected))[v[0],v[1]]=[v[1],v[0]];
+ a.forEach((g,i)=>{g.dataset.value=v[i];paint(g);});
+}
+function shuffleAll(){[1,2,3].forEach(shuffleLayer);}
+function applyEngineShuffle(shuffledPieces){
+ const nodes=allPieces();
+ if(!Array.isArray(shuffledPieces)||shuffledPieces.length!==nodes.length){
+  throw new Error("La remezcla del motor no coincide con las piezas de la consola.");
+ }
+ nodes.forEach((node,index)=>{
+  node.dataset.value=shuffledPieces[index].value;
+  paint(node);
+ });
+}
+function updateStats(){
+ $("moves").textContent=game.moves;$("errors").textContent=game.errors+" / 3";
+}
+function startGame(){
+ ["outer","middle","inner"].forEach(id=>$(id).style.opacity="0");
+  scheduleGame(()=>{
+  shuffleAll();
+  ["outer","middle","inner"].forEach(id=>$(id).style.opacity="1");
+  game.locked=false;
+  $("gameStatus").textContent="¡Comenzó el desafío! Ordená las tres capas.";
+ },450);
+}
+function newGame(){
+  clearGameTimers();
+ simonReset();
+ game.moves=0;game.errors=0;game.locked=true;game.completed=false;clearSelection();
+ genesisEngine.resetErrors();
+  shuffleAll();updateStats();startGame();
+  if (window.genesisPlaySound) window.genesisPlaySound("newgame");
+}
+function checkGame(){
+ if(game.locked)return;
+
+ if(allPieces().every(g=>g.dataset.value===g.dataset.expected)){
+  game.locked=true;game.completed=true;
+  $("gameStatus").textContent="¡DESAFÍO RESUELTO! Movimientos: "+game.moves+
+   ". Errores: "+game.errors+".";
+   if(window.genesisPlaySound)window.genesisPlaySound("success");
+  return;
+ }
+
+ const pieces = allPieces().map(g=>({
+  value:g.dataset.value,
+  locked:false,
+  correct:g.dataset.value===g.dataset.expected
+ }));
+
+ const result = genesisEngine.registerError(pieces);
+ game.errors=result.errors;
+ updateStats();
+  if(window.genesisPlaySound)window.genesisPlaySound("error");
+
+ if(result.reshuffled){
+  applyEngineShuffle(result.pieces);
+  game.locked=true;
+  ["outer","middle","inner"].forEach(id=>$(id).style.opacity="0");
+
+   scheduleGame(()=>{
+   clearSelection();
+   updateStats();
+   ["outer","middle","inner"].forEach(id=>$(id).style.opacity="1");
+   game.locked=false;
+   $("gameStatus").textContent="¡TERCER ERROR! El motor mezcló todas las piezas, incluso las correctas. ¡Intentá otra vez!";
+  },450);
+ }else{
+  $("gameStatus").textContent=result.message+" Seguí intentando.";
+ }
+}
+$("checkGame").addEventListener("click",checkGame);
+$("newGame").addEventListener("click",newGame);
+
+// Navegación común: cada módulo cancela la actividad que dejó atrás.
+const gameStage=$("gameStage");
+let activeModule="home";
+const initializedModules=new Set(["home"]);
+function showModule(name){
+  clearGameTimers();
+  if(window.genesisStopSounds)window.genesisStopSounds();
+  if(activeModule==="simon") simonReset();
+  if(activeModule==="geometry"){
+    game.locked=true;clearSelection();
+    ["outer","middle","inner"].forEach(id=>$(id).style.opacity="1");
+  }
+  if(activeModule==="words"&&wordSelection.length){
+    clearWordSelection();
+    $("wordsStatus").textContent="Selección parcial cancelada; las palabras encontradas se conservan.";
+  }
+  if(activeModule==="memo"&&memoOpen.length===2){
+    memoOpen.forEach(index=>{if(memoDeck[index]&&!memoDeck[index].matched)memoDeck[index].revealed=false;});
+    memoOpen=[];
+    renderMemo();
+    $("memoStatus").textContent=`Parejas ${memoMatches} de 6 · ${memoMoves} intentos.`;
+  }
+  activeModule=name;
+  gameStage.dataset.view=name;
+  $("geometryControls").style.display=name==="geometry"?"block":"none";
+  const titles={home:["Genesis Challenge","Entrá por la moneda FREAKCOIN y elegí una experiencia."],
+    geometry:["Desafío geométrico","Intercambiá piezas dentro de un mismo anillo y comprobá el orden."],
+    simon:["SIMON","Repetí la secuencia de luces y tonos; cada ronda agrega un paso."],
+    memo:["Memo Test","Encontrá las parejas entre figuras sólidas y sus contornos."],
+    sudoku:["Sudoku","Completá cada fila, columna y bloque con dígitos únicos del 1 al 9."],
+    words:["Sopa de Letras","Conectá letras vecinas en secuencia para encontrar las palabras ocultas."]};
+  $("moduleSideTitle").textContent=titles[name][0];
+  $("moduleSideDescription").textContent=titles[name][1];
+  const how={home:["Entrada","Tocá la moneda para mostrar los módulos."],geometry:["Cómo jugar","Seleccioná dos piezas del mismo anillo para intercambiarlas. Comprobá cada intento; el tercer error mezcla las 18."],simon:["Cómo jugar","Escuchá y observá la secuencia. Repetila; cada acierto suma un paso."],memo:["Cómo jugar","Revelá dos fichas por turno. Uní cada figura sólida con su contorno."],sudoku:["Cómo jugar","Completá las casillas vacías; los números iniciales están protegidos."],words:["Cómo jugar","Seleccioná letras vecinas en orden. Cada palabra encontrada consume sus fichas."]};
+  $("moduleHowTitle").textContent=how[name][0];$("moduleHowSteps").textContent=how[name][1];
+  if(name==="geometry"){
+    if(!initializedModules.has(name)) newGame();
+    else {game.locked=game.completed;updateStats();if(!game.completed)$("gameStatus").textContent="Partida retomada.";}
+  }
+  if(name==="simon") simonStart();
+  if(name==="memo"&&!initializedModules.has(name)) startMemo();
+  if(name==="sudoku"&&!initializedModules.has(name)) startSudoku();
+  if(name==="words"&&!initializedModules.has(name)) startWords();
+  initializedModules.add(name);
+}
+$("coinLaunch").addEventListener("click",()=>{
+  $("moduleGrid").hidden=false;
+  $("homePrompt").textContent="Elegí un módulo para comenzar. Podés volver aquí cuando quieras.";
+  if(window.genesisPlaySound) window.genesisPlaySound("select");
+});
+document.querySelectorAll(".module-card[data-module]").forEach(button=>button.addEventListener("click",()=>showModule(button.dataset.module)));
+document.querySelectorAll("[data-go-home]").forEach(button=>button.addEventListener("click",()=>showModule("home")));
+
+// SIMON usa un tablero grande y controles accesibles en su módulo dedicado.
+$("simonStartControl").addEventListener("click",simonStart);
+$("simonRestart").addEventListener("click",simonStart);
+document.querySelectorAll(".simon-pad").forEach(button=>button.addEventListener("click",()=>simonInput(Number(button.dataset.pad))));
+
+// MEMO TEST: parejas sólido/contorno; las resueltas conservan siempre su posición.
+let memoDeck=[],memoOpen=[],memoMoves=0,memoMatches=0;
+const memoFigures=[["◆","◇"],["●","○"],["▲","△"],["■","□"],["★","☆"],["⬟","⬡"]];
+function shuffleMemoPending(){
+  const slots=[],pending=[];
+  memoDeck.forEach((card,index)=>{
+    if(!card.matched){slots.push(index);pending.push(card);}
+  });
+  const shuffled=genesisEngine.shuffle(pending);
+  slots.forEach((slot,i)=>{memoDeck[slot]=shuffled[i];});
+}
+function renderMemo(){
+  const board=$("memoGrid");board.replaceChildren();
+  memoDeck.forEach((card,index)=>{
+    const button=document.createElement("button");button.type="button";button.className="memo-card";
+    button.setAttribute("aria-label",card.matched?"Pareja resuelta":card.revealed?"Figura "+memoFigures[card.pairId][card.style==="solid"?0:1]:"Ficha oculta");
+    if(card.revealed||card.matched){button.textContent=memoFigures[card.pairId][card.style==="solid"?0:1];button.classList.add(card.matched?"matched":"revealed");}
+    else button.textContent="✦";
+    button.disabled=Boolean(card.matched);button.addEventListener("click",()=>flipMemo(index));board.appendChild(button);
+  });
+}
+function startMemo(){clearGameTimers();memoDeck=genesisEngine.generateMemoPairs(memoFigures.map(pair=>pair[0]));memoOpen=[];memoMoves=0;memoMatches=0;$("memoStatus").textContent="Encontrá las seis parejas.";renderMemo();}
+function flipMemo(index){
+  const card=memoDeck[index];if(!card||card.matched||card.revealed||memoOpen.length===2)return;
+  card.revealed=true;memoOpen.push(index);renderMemo();
+  if(window.genesisPlaySound)window.genesisPlaySound("plop");
+  if(memoOpen.length<2)return;
+  memoMoves++;
+  const [a,b]=memoOpen.map(i=>memoDeck[i]);
+  if(a.pairId===b.pairId&&a.style!==b.style){
+    a.matched=b.matched=true;memoMatches++;memoOpen=[];
+    shuffleMemoPending();
+    $("memoStatus").textContent=memoMatches===6?`¡MEMO COMPLETADO! ${memoMoves} intentos.`:`Pareja ${memoMatches} de 6 · ${memoMoves} intentos.`;
+    if(window.genesisPlaySound)window.genesisPlaySound(memoMatches===6?"success":"select");
+    renderMemo();return;
+  }
+  $("memoStatus").textContent="No coinciden; se ocultan sin cambiar de posición.";
+  if(window.genesisPlaySound)window.genesisPlaySound("error");
+  scheduleGame(()=>{
+    memoOpen.forEach(i=>memoDeck[i].revealed=false);
+    memoOpen=[];
+    $("memoStatus").textContent=`Parejas ${memoMatches} de 6 · ${memoMoves} intentos.`;
+    renderMemo();
+  },850);
+}
+$("memoRestart").addEventListener("click",startMemo);
+
+// Sudoku jugable sobre el generador y validador compartidos del motor.
+let sudokuPuzzle=null,sudokuBoard=null;
+function refreshSudokuConflicts(){const cells=Array.from(document.querySelectorAll(".sudoku-cell"));const invalid=new Set();for(let i=0;i<cells.length;i++){const a=cells[i],ar=Number(a.dataset.row),ac=Number(a.dataset.col),av=Number(sudokuBoard[ar][ac]);if(!av)continue;for(let j=i+1;j<cells.length;j++){const b=cells[j],br=Number(b.dataset.row),bc=Number(b.dataset.col);if(av===Number(sudokuBoard[br][bc])&&(ar===br||ac===bc||(Math.floor(ar/3)===Math.floor(br/3)&&Math.floor(ac/3)===Math.floor(bc/3)))){invalid.add(a);invalid.add(b);}}}cells.forEach(cell=>cell.classList.toggle("invalid",invalid.has(cell)));return invalid.size;}function startSudoku(){
+  clearGameTimers();const generated=genesisEngine.generateSudoku(Number($("sudokuLevel").value));
+  sudokuPuzzle=generated.puzzle.map(row=>[...row]);sudokuBoard=generated.puzzle.map(row=>[...row]);
+  const grid=$("sudokuGrid");grid.replaceChildren();
+  sudokuBoard.forEach((row,r)=>row.forEach((value,c)=>{
+    const input=document.createElement("input");input.type="text";input.inputMode="numeric";input.maxLength=1;input.className="sudoku-cell";input.dataset.row=r;input.dataset.col=c;
+    input.setAttribute("aria-label",`Fila ${r+1}, columna ${c+1}`);input.setAttribute("role","gridcell");
+    if(r===2||r===5)input.classList.add("box-bottom");
+    if(value){input.value=value;input.readOnly=true;input.classList.add("given");}
+    else input.addEventListener("input",()=>{input.value=input.value.replace(/[^1-9]/g,"").slice(-1);const previous=sudokuBoard[r][c];const candidate=input.value?Number(input.value):0;if(candidate){const conflict=sudokuBoard.some((row,rr)=>row.some((value,cc)=>value===candidate&&(rr===r||cc===c||(Math.floor(rr/3)===Math.floor(r/3)&&Math.floor(cc/3)===Math.floor(c/3)))));if(conflict){input.value=previous?String(previous):"";if(window.genesisPlaySound)window.genesisPlaySound("error");$("sudokuStatus").textContent="Ese número ya está en la fila, columna o bloque 3×3.";return;}}sudokuBoard[r][c]=candidate;refreshSudokuConflicts();$("sudokuStatus").textContent="Sin conflictos por ahora; podés continuar.";});
+    grid.appendChild(input);
+  }));
+  $("sudokuStatus").textContent=`Tablero nuevo · ${generated.clues} pistas.`;
+}
+function checkSudoku(){
+  const result=genesisEngine.validateSudoku(sudokuBoard);
+  refreshSudokuConflicts();
+  if(!result.valid){$("sudokuStatus").textContent="Hay números repetidos o fuera de rango en: "+result.errors.slice(0,5).join(", ")+(result.errors.length>5?"…":"");if(window.genesisPlaySound)window.genesisPlaySound("error");return;}
+  if(!result.complete){$("sudokuStatus").textContent="Sin conflictos por ahora; faltan casillas.";return;}
+  $("sudokuStatus").textContent="¡SUDOKU RESUELTO! Filas, columnas y bloques válidos.";if(window.genesisPlaySound)window.genesisPlaySound("success");
+}
+$("sudokuRestart").addEventListener("click",startSudoku);
+$("sudokuLevel").addEventListener("change",startSudoku);
+$("sudokuCheck").addEventListener("click",checkSudoku);
+
+// Sopa de Letras: 30 posiciones perimetrales, cinco por lado y selección vecina.
+const wordBank=["GENESIS","DIAMANTE","HEXAGONO","TURQUESA","FREAKCOIN","LUNA","RISA","JUEGO","ORO","NUBE","PINO","TREN","MATE","CASA","FARO","ROCA","AMOR","DADO","FLOR","CIELO","LAGO","SALTO","RITMO","PIEZA","CLAVE","SOLAR","BRISA","VALOR","METAL","IDEA"];
+let wordRound=null,wordFound=new Set(),wordSelection=[];
+function clearWordSelection(){wordSelection=[];document.querySelectorAll(".hex-letter.selected").forEach(node=>node.classList.remove("selected"));}
+function renderWordList(){const list=$("wordList");list.replaceChildren();wordRound.words.forEach(word=>{const chip=document.createElement("span");chip.className="word-chip"+(wordFound.has(word)?" found":"");chip.textContent=wordFound.has(word)?word:"• • • •";chip.setAttribute("aria-label",wordFound.has(word)?"Encontrada: "+word:"Palabra oculta");list.appendChild(chip);});}
+function startWords(){
+  clearGameTimers();wordRound=genesisEngine.generateHexWordSearch(wordBank,Number($("wordLevel").value));wordFound=new Set();wordSelection=[];
+  const board=$("hexBoard");board.replaceChildren();
+  const corners=Array.from({length:6},(_,i)=>({x:50+42*Math.cos((-90+i*60)*Math.PI/180),y:50+42*Math.sin((-90+i*60)*Math.PI/180)}));
+  wordRound.letters.forEach((letter,index)=>{
+    const side=Math.floor(index/5),step=index%5,from=corners[side],to=corners[(side+1)%6],x=from.x+(to.x-from.x)*step/5,y=from.y+(to.y-from.y)*step/5;
+    const button=document.createElement("button");button.type="button";button.className="hex-letter";button.textContent=letter;button.style.left=x+"%";button.style.top=y+"%";button.dataset.index=index;button.setAttribute("aria-label",`Letra ${letter}, lado ${side+1}`);button.addEventListener("click",()=>selectWordLetter(index));board.appendChild(button);
+  });
+  renderWordList();$("wordsStatus").textContent="30 letras · cinco por lado. Elegí letras conectadas.";
+}
+function selectWordLetter(index){
+  const node=$("hexBoard").querySelector(`[data-index="${index}"]`);if(!node||node.classList.contains("consumed"))return;
+  if(wordSelection.includes(index)){clearWordSelection();return;}
+  if(wordSelection.length){const last=wordSelection[wordSelection.length-1],connected=index===(last+1)%30||index===(last+29)%30;if(!connected){clearWordSelection();}}
+  wordSelection.push(index);node.classList.add("selected");
+  const forward=wordRound.placements.some(p=>p.indices.slice(0,wordSelection.length).every((cell,i)=>cell===wordSelection[i]));
+  const reverse=wordRound.placements.some(p=>[...p.indices].reverse().slice(0,wordSelection.length).every((cell,i)=>cell===wordSelection[i]));
+  if(!forward&&!reverse){$("wordsStatus").textContent="Esa secuencia no inicia una palabra objetivo; probá otra selección.";clearWordSelection();return;}
+  const placement=wordRound.placements.find(p=>p.indices.length===wordSelection.length&&(p.indices.every((cell,i)=>cell===wordSelection[i])||[...p.indices].reverse().every((cell,i)=>cell===wordSelection[i])));
+  if(placement&&!wordFound.has(placement.word)){
+    wordFound.add(placement.word);wordSelection.forEach(cell=>$("hexBoard").querySelector(`[data-index="${cell}"]`).classList.add("consumed"));clearWordSelection();renderWordList();
+    $("wordsStatus").textContent=wordFound.size===wordRound.words.length?"¡SOPA COMPLETADA! Encontraste todas las palabras.":`Encontraste ${placement.word} · ${wordFound.size} de ${wordRound.words.length}.`;
+    if(window.genesisPlaySound)window.genesisPlaySound(wordFound.size===wordRound.words.length?"success":"select");
+  }else $("wordsStatus").textContent="Secuencia conectada: "+wordSelection.map(i=>wordRound.letters[i]).join("");
+}
+$("wordsRestart").addEventListener("click",startWords);
+$("wordLevel").addEventListener("change",startWords);
+$("wordUndo").addEventListener("click",()=>{clearWordSelection();$("wordsStatus").textContent="Selección limpia; las parejas de letras siguen disponibles.";});
+
+
+// Controles de consola: piezas, símbolos, luminosidad, sonido y vista inmersiva.
+(function(){
+  const scene=document.getElementById("scene");
+  const pieceSize=document.getElementById("pieceSize");
+  const symbolSize=document.getElementById("symbolSize");
+  const brightness=document.getElementById("brightnessControl");
+  const soundButton=document.getElementById("soundToggle");
+   const volumeControl=document.getElementById("volumeControl");
+  const fullscreenButton=document.getElementById("fullscreenToggle");
+  let soundEnabled=false;
+  let audioContext=null;
+  const activeVoices=new Set();
+  function syncSoundControl(){
+    soundButton.textContent=soundEnabled?"SONIDO: ACTIVADO":"SONIDO: DESACTIVADO";
+    soundButton.setAttribute("aria-pressed",String(soundEnabled));
+    document.documentElement.dataset.sound=soundEnabled?"on":"off";
+  }
+  function stopActiveVoices(){
+    activeVoices.forEach(voice=>{try{voice.stop();}catch(_){}});
+    activeVoices.clear();
+  }
+  function setSoundEnabled(enabled){
+    soundEnabled=Boolean(enabled);
+    syncSoundControl();
+    if(!soundEnabled) stopActiveVoices();
+  }
+  window.genesisPlaySound=function(kind){
+    if(!soundEnabled)return;
+    try{
+      const AudioCtx=window.AudioContext||window.webkitAudioContext;
+      if(!AudioCtx)return;
+      audioContext=audioContext||new AudioCtx();
+      if(audioContext.state==="suspended") audioContext.resume().catch(()=>{});
+      if(activeVoices.size>=3) activeVoices.values().next().value.stop();
+      const osc=audioContext.createOscillator(), gain=audioContext.createGain();
+      const tones={select:520,swap:660,success:880,error:190,newgame:440,plop:920,simon0:262,simon1:330,simon2:392,simon3:523};
+      const duration=kind==="plop"?.12:.18;
+      osc.type="sine";osc.frequency.setValueAtTime(tones[kind]||520,audioContext.currentTime);
+      if(kind==="plop")osc.frequency.exponentialRampToValueAtTime(480,audioContext.currentTime+duration);
+      gain.gain.setValueAtTime(0.0001,audioContext.currentTime);
+      const peak=(kind==="plop"?.055:.07)*Number(volumeControl.value)/100;
+      gain.gain.exponentialRampToValueAtTime(Math.max(0.0001,peak),audioContext.currentTime+0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001,audioContext.currentTime+duration);
+      osc.connect(gain);gain.connect(audioContext.destination);
+      activeVoices.add(osc);
+      osc.onended=()=>activeVoices.delete(osc);
+      osc.start();osc.stop(audioContext.currentTime+duration+0.01);
+    }catch(_){}
+  };
+   window.genesisStopSounds=stopActiveVoices;
+  function setOutput(id,value){const out=document.getElementById(id);if(out)out.textContent=value+"%";}
+  function applyPieceScale(){
+    const scale=Number(pieceSize.value)/100;
+     document.documentElement.style.setProperty("--piece-scale",scale);
+    setOutput("pieceSizeOut",pieceSize.value);
+    scene.querySelectorAll("g[data-layer]").forEach(g=>{
+      const text=g.querySelector("text"); if(!text)return;
+      const x=Number(text.getAttribute("x")), y=Number(text.getAttribute("y"))-7;
+      g.setAttribute("transform",`translate(${x} ${y}) scale(${scale}) translate(${-x} ${-y})`);
+    });
+  }
+  function applySymbolScale(){
+    const scale=Number(symbolSize.value)/100;
+     document.documentElement.style.setProperty("--symbol-scale",scale);
+    setOutput("symbolSizeOut",symbolSize.value);
+    scene.querySelectorAll("g[data-layer] text").forEach(t=>{
+      const base=Number(t.dataset.baseSize||t.getAttribute("font-size")||17);
+      t.dataset.baseSize=base;
+      t.setAttribute("font-size",base*scale);
+    });
+  }
+  function applyBrightness(){
+    setOutput("brightnessOut",brightness.value);
+    document.documentElement.style.setProperty("--console-brightness",Number(brightness.value)/100);
+  }
+  pieceSize.addEventListener("input",applyPieceScale);
+  symbolSize.addEventListener("input",applySymbolScale);
+  brightness.addEventListener("input",applyBrightness);
+   volumeControl.addEventListener("input",()=>{setOutput("volumeOut",volumeControl.value);});
+  soundButton.addEventListener("click",()=>{
+    setSoundEnabled(!soundEnabled);
+    if(soundEnabled) window.genesisPlaySound("select");
+  });
+  async function toggleFullscreen(){
+    try{
+      if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+      else await document.exitFullscreen();
+    }catch(_){
+      document.body.classList.toggle("immersive-fallback");
+    }
+  }
+  fullscreenButton.addEventListener("click",toggleFullscreen);
+  document.addEventListener("fullscreenchange",()=>{
+    fullscreenButton.textContent=document.fullscreenElement?"SALIR DE VISTA INMERSIVA":"VISTA INMERSIVA";
+  });
+  // Doble clic/toque sobre la consola alterna la vista inmersiva, si el navegador lo permite.
+  let lastTap=0;
+  scene.addEventListener("pointerup",()=>{
+    const now=Date.now();
+    if(now-lastTap<320) toggleFullscreen();
+    lastTap=now;
+  });
+  const reset=document.getElementById("resetPreferences");
+  if(reset) reset.addEventListener("click",()=>{
+    pieceSize.value=100;symbolSize.value=100;brightness.value=100;volumeControl.value=70;
+    applyPieceScale();applySymbolScale();applyBrightness();setOutput("volumeOut",volumeControl.value);
+    setSoundEnabled(false);
+  });
+   applyPieceScale();applySymbolScale();applyBrightness();setOutput("volumeOut",volumeControl.value);
+})();
+
+</script>
+<script src="genesis-referrals.demo.js"></script>
+</body>
+</html>
