@@ -34,7 +34,7 @@ Hashes SHA-256 activos, iniciales y de respaldos: ver `MANIFIESTO_SHA256.txt`. L
 
 ## Adenda Fase 3B — GENESIS MATRIX y PWA de prueba
 
-Fecha: 2026-10-31. Raíz: `C:\Users\seral\OneDrive\Desktop\GENESIS_RC1_REFERIDOS_TEST`. Build local: `0.4.0-test`. Esta adenda prevalece sobre las descripciones de la Sopa y PWA escritas antes de esta fase. No se publicaron cambios en este registro de pruebas.
+Fecha: 2026-10-31. Raíz: `C:\Users\seral\OneDrive\Desktop\GENESIS_RC1_REFERIDOS_TEST`. Build local: `0.4.0-test`. Esta adenda prevalece sobre las descripciones de la Sopa y PWA escritas antes de esta fase. La publicación final del build de prueba se documenta en la última sección.
 
 ### Cambios implementados
 
@@ -88,3 +88,11 @@ Fecha: 2026-10-31. Raíz: `C:\Users\seral\OneDrive\Desktop\GENESIS_RC1_REFERIDOS
 - Memo: se probó pareja incorrecta (ocultamiento tras espera) y pareja correcta (queda visible en su índice original); el tablero mantuvo 12 fichas. El desbloqueo tras Sudoku 4/4 se vio en la navegación. El estudio de percepción con testers humanos queda preparado en `GUIA_TESTERS.md`, todavía no ejecutado.
 - SIMON: se completaron secuencias correctas de rondas 1 y 2, avance de ronda, error intencional y reinicio. Los cuatro pads emitieron su tono/feedback de entrada; se verificaron mute y reactivación, volumen inicial 100 %. Tonos de software: 392/523/659/784 Hz; no se midió nivel acústico en dispositivo.
 - Los módulos de motor, referidos y seguridad DIAMOND no recibieron modificaciones aparte del nuevo método aditivo en el motor GENESIS.
+
+### Publicación de prueba verificada
+
+- Push a `origin/main` completado. Commit del build: `6b5f539d10cd54650ebc351444af3f17e4a21841` (`Prepare GENESIS CHALLENGE 0.4.1 test build`). GitHub Actions Pages run `41216408705`: despliegue exitoso.
+- La URL pública `https://herrametdesign-lang.github.io/GENESIS-CHALLENGE/` sirve el badge `0.4.1-test`. En navegador, Sopa mostró encabezado GENESIS MATRIX, 144 celdas y 7 palabras; la PWA reportó versión 0.4.1-test y la consola quedó sin errores/advertencias.
+- SHA públicos de motor, seguridad DIAMOND, referidos, manifest, service worker y tres iconos coinciden exactamente con sus SHA locales activos registrados arriba.
+- El HTML local Windows usa CRLF; GitHub Pages sirve el mismo texto con LF. SHA del archivo de trabajo CRLF: `20F23F1ED09218336432EE7104A71D4CB8B6A9A632AA5A61919057F07D2F6BDC`. SHA del HTML público y del HTML local normalizado a LF: `9D5320E1BD2BDA0D1B7D590456953E98B6C0D0116B038D82A01A92F72530E1A9`; contenido normalizado comparado exacto.
+- Esto es una publicación de prueba. No está declarada estable; la aceptación final queda a cargo de Sergio. Android, instalación nativa y los MP3 de Memo siguen pendientes.
