@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GENESIS CHALLENGE | FREAKCOIN</title>
+<meta name="theme-color" content="#101615">
+<meta name="application-name" content="GENESIS CHALLENGE">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./pwa-icons/genesis-mark.svg">
 <style>
 :root {
   --turquoise: #52DDC8;
@@ -51,6 +55,11 @@ h1 span { color: var(--turquoise); }
   font-size: 10px;
   letter-spacing: 2px;
 }
+.status.test-build {border-color:#52ddc8;color:#52ddc8}
+#appUpdateNotice {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:10px 0;padding:12px 15px;border:1px solid #c5a568;border-radius:8px;background:#13221e;color:#f0d995}
+#appUpdateNotice[hidden],#installPwaButton[hidden] {display:none}
+#appUpdateNotice button,#installPwaButton {min-height:40px;padding:9px 12px;border:1px solid #52ddc8;border-radius:6px;background:#10211d;color:#52ddc8;font-weight:700;cursor:pointer}
+#pwaStatus {font-size:11px;line-height:1.5;color:#a9c3bb;margin:8px 0}
 .stage {
   border: 1px solid #29423c;
   background: linear-gradient(145deg, #14201eaa, #080e0d88);
@@ -133,6 +142,9 @@ main { margin:0 auto; }
   display:grid; grid-template-columns:minmax(170px, 220px) minmax(0,1fr) minmax(190px,240px);
   gap:14px; align-items:stretch;
 }
+.console-layout:not(.entered) {grid-template-columns:minmax(0,1fr);max-width:1050px;margin:0 auto}
+.console-layout:not(.entered) .left-panel,.console-layout:not(.entered) .right-panel {display:none}
+.console-layout:not(.entered) .stage {grid-column:1}
 .console-panel {
   border:1px solid #28534d; border-radius:10px;
   background:linear-gradient(150deg,#111d1b 0%,#080d0d 100%);
@@ -195,7 +207,8 @@ main { margin:0 auto; }
 .module-grid {width:min(100%,840px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .module-grid[hidden] {display:none}
 .module-card,.module-button {border:1px solid #427d72;border-radius:8px;background:linear-gradient(145deg,#152622,#0a100f);color:#d8efe9;padding:15px;cursor:pointer;text-align:left;transition:transform .16s,border-color .16s,box-shadow .16s}
-.module-card:hover,.module-button:hover {transform:translateY(-2px);border-color:#f0d995;box-shadow:0 7px 24px #0007,0 0 14px #52ddc820}
+.module-card:hover:not(:disabled),.module-button:hover:not(:disabled) {transform:translateY(-2px);border-color:#f0d995;box-shadow:0 7px 24px #0007,0 0 14px #52ddc820}
+.module-card:disabled,.module-button:disabled {opacity:.48;cursor:not-allowed;filter:saturate(.55)}
 .module-card strong {display:block;color:#52ddc8;font-size:12px;letter-spacing:1.4px;margin-bottom:6px}
 .module-card span {font-size:11px;line-height:1.4;color:#a9c3bb}
 .module-toolbar {display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 18px}
@@ -217,9 +230,11 @@ main { margin:0 auto; }
 .sudoku-cell.given {color:#f0d995;font-weight:800;background:#17241f}.sudoku-cell.invalid{background:#542b29;color:#fff}
 .module-actions {display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0}
 .module-actions select,.module-actions input {min-height:40px;padding:8px 10px;background:#101c18;color:#e9f5f0;border:1px solid #397c73;border-radius:5px}
-.hex-board {width:min(100%,660px);aspect-ratio:1.12;position:relative;margin:24px auto;background:radial-gradient(circle,#17332d55,transparent 68%)}
-.hex-letter {position:absolute;width:calc(9.5% * var(--piece-scale,1));aspect-ratio:1;border-radius:50%;border:1px solid #c5a568;background:linear-gradient(145deg,#1c3b34,#0b1210);color:#f0d995;font-weight:800;font-size:calc(clamp(12px,2vw,20px) * var(--symbol-scale,1));transform:translate(-50%,-50%);cursor:pointer;box-shadow:0 3px 10px #0008}
-.hex-letter.selected{background:#52ddc8;color:#101615;box-shadow:0 0 17px #52ddc8}.hex-letter.consumed{background:#28342f;color:#6d837a;opacity:.45;cursor:default;text-decoration:line-through}
+.word-board-wrap {width:100%;overflow-x:auto;padding:2px 0 10px;overscroll-behavior-x:contain}
+.word-board {width:max-content;min-width:min(100%,660px);display:grid;grid-template-columns:repeat(var(--word-cols,12),minmax(30px,1fr));gap:3px;margin:20px auto;padding:8px;border:1px solid #397c73;border-radius:10px;background:radial-gradient(circle,#17332d88,#0b1210 78%);}
+.word-board[data-wide="true"]{margin-left:0;margin-right:0}
+.word-letter {min-width:0;aspect-ratio:1;border:1px solid #28534d;border-radius:4px;background:linear-gradient(145deg,#1c3b34,#0b1210);color:#f0d995;font-weight:800;font-size:calc(clamp(11px,1.8vw,19px) * var(--symbol-scale,1));cursor:pointer;box-shadow:0 2px 6px #0006}
+.word-letter.selected{background:#52ddc8;color:#101615;box-shadow:0 0 12px #52ddc8}.word-letter.found-letter{border-color:#52ddc8;box-shadow:inset 0 0 0 1px #52ddc877}.word-letter.consumed{background:#24302c;color:#74857e;border-color:#42564f;cursor:not-allowed;opacity:.8}
 .word-list {display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.word-chip{border:1px solid #397c73;padding:6px 10px;border-radius:20px;color:#bddbd3;font-size:12px}.word-chip.found{color:#52ddc8;text-decoration:line-through}
 .module-icon{color:#c5a568;font-size:20px;margin-right:5px}
 .referral-card{max-width:680px;margin:18px auto;padding:22px;border:1px solid #c5a568;border-radius:12px;background:#101c19;text-align:center}
@@ -265,17 +280,20 @@ main { margin:0 auto; }
     <div class="eyebrow">SQ-ONE Research Labs · Original puzzle concept</div>
     <h1>GENESIS <span>CHALLENGE</span></h1>
   </div>
-  <div class="status">◆ FREAKCOIN / GAME MODULES</div>
+  <div class="status test-build" id="releaseBadge">◆ BUILD DE PRUEBA · RC1 / 0.4.1-test</div>
 </header>
-
-<div class="console-layout">
+<section id="appUpdateNotice" aria-live="polite" role="status" hidden>
+  <span id="appUpdateMessage">Hay una versión lista para instalar cuando estés en un punto seguro.</span>
+  <button type="button" id="applyUpdateButton">APLICAR EN EL MENÚ O AL REINICIAR</button>
+</section>
+<div class="console-layout" id="consoleLayout">
 <aside class="console-panel left-panel" aria-label="Estado y personalización">
   <h2>Consola · ajustes</h2>
   <div class="pref-row"><label for="pieceSize">Tamaño de piezas</label><input id="pieceSize" type="range" min="85" max="120" value="100"><output id="pieceSizeOut">100%</output></div>
   <div class="pref-row"><label for="symbolSize">Tamaño de letras y números</label><input id="symbolSize" type="range" min="80" max="140" value="100"><output id="symbolSizeOut">100%</output></div>
   <div class="pref-row"><label for="brightnessControl">Luminosidad de la consola</label><input id="brightnessControl" type="range" min="45" max="130" value="100"><output id="brightnessOut">100%</output></div>
-  <div class="pref-row"><label for="soundToggle">Sonido</label><button id="soundToggle" type="button" aria-pressed="false">SONIDO: DESACTIVADO</button></div>
-  <div class="pref-row"><label for="volumeControl">Volumen</label><input id="volumeControl" type="range" min="0" max="100" value="70"><output id="volumeOut">70%</output></div>
+  <div class="pref-row"><label for="soundToggle">Sonido</label><button id="soundToggle" type="button" aria-pressed="true">SONIDO: ACTIVADO</button></div>
+  <div class="pref-row"><label for="volumeControl">Volumen</label><input id="volumeControl" type="range" min="0" max="100" value="100"><output id="volumeOut">100%</output></div>
   <p class="hint">La luminosidad regula los efectos visuales de la consola, no el brillo físico de la pantalla.</p>
 </aside>
 <div class="stage" id="gameStage" data-view="home">
@@ -286,14 +304,16 @@ main { margin:0 auto; }
     </button>
     <h2>GENESIS CHALLENGE</h2>
     <p id="homePrompt">Tocá la moneda para entrar a la consola y elegir un módulo.</p>
+    <button type="button" id="installPwaButton" hidden>INSTALAR GENESIS</button>
     <div class="module-grid" id="moduleGrid" hidden>
       <button class="module-card" data-module="simon"><strong><span class="module-icon">◈</span>SIMON</strong><span>Memoria secuencial de luces y tonos.</span></button>
-      <button class="module-card" data-module="memo"><strong><span class="module-icon">⬡</span>MEMO TEST</strong><span>Emparejá figuras sólidas con sus contornos.</span></button>
-      <button class="module-card" data-module="sudoku"><strong><span class="module-icon">▦</span>SUDOKU</strong><span>Completá una cuadrícula lógica 9 × 9.</span></button>
+      <button class="module-card" data-module="memo" id="memoLaunch" disabled aria-describedby="memoLockStatus"><strong><span class="module-icon">⬡</span>MEMO TEST</strong><span>Emparejá figuras sólidas con sus contornos.</span></button>
+      <button class="module-card" data-module="sudoku"><strong><span class="module-icon">▦</span>SUDOKU</strong><span>Resolvé cuatro niveles consecutivos de 9 × 9.</span></button>
       <button class="module-card" data-module="words"><strong><span class="module-icon">⬢</span>SOPA DE LETRAS</strong><span>Conectá letras y encontrá palabras ocultas.</span></button>
 <button class="module-card" type="button" id="referralsLaunch"><strong><span class="module-icon">◇</span>INVITAR AMIGOS</strong><span>Compartí GENESIS y acumulá méritos.</span></button>
 
     </div>
+    <p id="memoLockStatus" class="hint" aria-live="polite">Memo Test se habilita al completar los cuatro niveles de Sudoku.</p>
   </div>
 </section>
 <section id="referralsView" class="module-screen">
@@ -385,13 +405,13 @@ main { margin:0 auto; }
 </section>
 <section id="sudokuView" class="module-screen">
   <div class="module-toolbar"><button type="button" class="module-button" data-go-home>← MÓDULOS</button><h2 class="module-heading">SUDOKU / 9 × 9</h2><button type="button" class="module-button" id="sudokuRestart">NUEVO TABLERO</button></div>
-  <div class="module-content"><div class="module-actions"><label for="sudokuLevel">Dificultad</label><select id="sudokuLevel"><option value="45">Iniciación · 45 pistas</option><option value="35" selected>Estándar · 35 pistas</option><option value="28">Avanzado · 28 pistas</option></select><button type="button" class="module-button" id="sudokuCheck">COMPROBAR</button></div>
+  <div class="module-content"><div class="module-actions"><label for="sudokuLevel">Nivel</label><select id="sudokuLevel"><option value="1">Nivel 1 · Iniciación</option><option value="2" disabled>Nivel 2 · Progreso</option><option value="3" disabled>Nivel 3 · Avanzado</option><option value="4" disabled>Nivel 4 · Experto</option></select><button type="button" class="module-button" id="sudokuCheck">COMPROBAR</button><button type="button" class="module-button" id="sudokuNext" disabled>SIGUIENTE NIVEL →</button></div>
     <p id="sudokuStatus" class="module-status" aria-live="polite">Completá filas, columnas y bloques con números del 1 al 9.</p><div class="sudoku-wrap"><div class="sudoku-grid" id="sudokuGrid" role="grid" aria-label="Sudoku 9 por 9"></div></div></div>
 </section>
 <section id="wordsView" class="module-screen">
-  <div class="module-toolbar"><button type="button" class="module-button" data-go-home>← MÓDULOS</button><h2 class="module-heading">SOPA DE LETRAS</h2><button type="button" class="module-button" id="wordsRestart">NUEVA SOPA</button></div>
-  <div class="module-content"><div class="module-actions"><label for="wordLevel">Dificultad</label><select id="wordLevel"><option value="2">Iniciación · 2 palabras</option><option value="3" selected>Estándar · 3 palabras</option><option value="4">Avanzado · 4 palabras</option></select><button type="button" class="module-button" id="wordUndo">LIMPIAR SELECCIÓN</button></div>
-    <p id="wordsStatus" class="module-status" aria-live="polite">Seleccioná letras vecinas en secuencia.</p><div class="word-list" id="wordList"></div><div id="hexBoard" class="hex-board" aria-label="Tablero de letras hexagonal"></div></div>
+  <div class="module-toolbar"><button type="button" class="module-button" data-go-home>← MÓDULOS</button><h2 class="module-heading">GENESIS MATRIX</h2><button type="button" class="module-button" id="wordsRestart">NUEVA MATRIZ</button></div>
+  <div class="module-content"><div class="module-actions"><label for="wordLevel">Matriz</label><select id="wordLevel"><option value="6x10">6 × 10 · Iniciación · 3 palabras</option><option value="6x12">6 × 12 · Intermedio · 4 palabras</option><option value="12x12" selected>12 × 12 · Avanzado · 7 palabras</option><option value="10x20">10 × 20 · Experto · 10 palabras</option></select><button type="button" class="module-button" id="wordUndo">LIMPIAR SELECCIÓN</button></div>
+    <p id="wordsStatus" class="module-status" aria-live="polite">Encontrá palabras en línea recta, en cualquier sentido.</p><div class="module-actions word-stats"><span id="wordProgress">Encontradas: 0/7</span><span id="wordErrors">Errores: 0/3</span><span id="wordScore">Puntaje: 0</span></div><div class="word-list" id="wordList"></div><div class="word-board-wrap"><div id="wordBoard" class="word-board" role="grid" aria-label="Matriz de búsqueda de palabras"></div></div></div>
 </section>
 </div>
 <aside class="console-panel right-panel" aria-label="Instrucciones y controles">
@@ -400,6 +420,8 @@ main { margin:0 auto; }
   <h3 id="moduleHowTitle">Entrada</h3>
   <p id="moduleHowSteps">Tocá la moneda y elegí una experiencia.</p>
   <button class="control-button" type="button" id="fullscreenToggle">VISTA INMERSIVA</button>
+  <button class="control-button" type="button" id="checkUpdates">BUSCAR ACTUALIZACIONES</button>
+  <p id="pwaStatus" role="status" aria-live="polite">Preparando aplicación instalable…</p>
   <p class="hint">En horizontal, los paneles se ubican a los lados. En vertical, pasan arriba y abajo.</p>
 </aside>
 </div>
@@ -488,8 +510,8 @@ main { margin:0 auto; }
 })();
 </script>
 
-<script src="motor-genesis.browser.js"></script>
-<script src="diamond-security/diamond-unbunker.js"></script>
+<script src="motor-genesis.browser.js?v=0.4.1-test"></script>
+<script src="diamond-security/diamond-unbunker.js?v=0.4.1-test"></script>
 
 <script>
 const NS = "http://www.w3.org/2000/svg";
@@ -1002,6 +1024,7 @@ const gameStage=$("gameStage");
 let activeModule="home";
 const initializedModules=new Set(["home"]);
 function showModule(name){
+  if(name==="memo"&&memoProgressLocked())return;
   clearGameTimers();
   if(window.genesisStopSounds)window.genesisStopSounds();
   if(activeModule==="simon") simonReset();
@@ -1027,10 +1050,10 @@ function showModule(name){
     simon:["SIMON","Repetí la secuencia de luces y tonos; cada ronda agrega un paso."],
     memo:["Memo Test","Encontrá las parejas entre figuras sólidas y sus contornos."],
     sudoku:["Sudoku","Completá cada fila, columna y bloque con dígitos únicos del 1 al 9."],
-    words:["Sopa de Letras","Conectá letras vecinas en secuencia para encontrar las palabras ocultas."]};
+    words:["GENESIS MATRIX","Encontrá palabras rectas en matrices de 6 × 10, 6 × 12, 12 × 12 o 10 × 20."]};
   $("moduleSideTitle").textContent=titles[name][0];
   $("moduleSideDescription").textContent=titles[name][1];
-  const how={home:["Entrada","Tocá la moneda para mostrar los módulos."],geometry:["Cómo jugar","Seleccioná dos piezas del mismo anillo para intercambiarlas. Comprobá cada intento; el tercer error mezcla las 18."],simon:["Cómo jugar","Escuchá y observá la secuencia. Repetila; cada acierto suma un paso."],memo:["Cómo jugar","Revelá dos fichas por turno. Uní cada figura sólida con su contorno."],sudoku:["Cómo jugar","Completá las casillas vacías; los números iniciales están protegidos."],words:["Cómo jugar","Seleccioná letras vecinas en orden. Cada palabra encontrada consume sus fichas."]};
+  const how={home:["Entrada","Tocá la moneda para mostrar los módulos."],geometry:["Cómo jugar","Seleccioná dos piezas del mismo anillo para intercambiarlas. Comprobá cada intento; el tercer error mezcla las 18."],simon:["Cómo jugar","Escuchá y observá la secuencia. Repetila; cada acierto suma un paso."],memo:["Cómo jugar","Revelá dos fichas por turno. Uní cada figura sólida con su contorno."],sudoku:["Cómo jugar","Completá las casillas vacías; los números iniciales están protegidos."],words:["Cómo jugar","Elegí un tamaño y encontrá las palabras visibles en línea recta: horizontal, vertical o diagonal, en ambos sentidos. Las letras halladas se consumen. A tu tercer error, se mezcla toda la matriz."]};
   $("moduleHowTitle").textContent=how[name][0];$("moduleHowSteps").textContent=how[name][1];
   if(name==="geometry"){
     if(!initializedModules.has(name)) newGame();
@@ -1041,10 +1064,13 @@ function showModule(name){
   if(name==="sudoku"&&!initializedModules.has(name)) startSudoku();
   if(name==="words"&&!initializedModules.has(name)) startWords();
   initializedModules.add(name);
+  if(name==="home"&&window.genesisApplyPendingUpdate)window.genesisApplyPendingUpdate();
 }
 $("coinLaunch").addEventListener("click",()=>{
   $("moduleGrid").hidden=false;
   $("homePrompt").textContent="Elegí un módulo para comenzar. Podés volver aquí cuando quieras.";
+  $("consoleLayout").classList.add("entered");
+  syncSudokuUnlocks();
   if(window.genesisPlaySound) window.genesisPlaySound("select");
 });
 document.querySelectorAll(".module-card[data-module]").forEach(button=>button.addEventListener("click",()=>showModule(button.dataset.module)));
@@ -1058,15 +1084,7 @@ document.querySelectorAll(".simon-pad").forEach(button=>button.addEventListener(
 // MEMO TEST: parejas sólido/contorno; las resueltas conservan siempre su posición.
 let memoDeck=[],memoOpen=[],memoMoves=0,memoMatches=0;
 const memoFigures=[["◆","◇"],["●","○"],["▲","△"],["■","□"],["★","☆"],["⬟","⬡"]];
-function shuffleMemoPending(){
-  const slots=[],pending=[];
-  memoDeck.forEach((card,index)=>{
-    if(!card.matched){slots.push(index);pending.push(card);}
-  });
-  const shuffled=genesisEngine.shuffle(pending);
-  slots.forEach((slot,i)=>{memoDeck[slot]=shuffled[i];});
-}
-function renderMemo(){
+ function renderMemo(){
   const board=$("memoGrid");board.replaceChildren();
   memoDeck.forEach((card,index)=>{
     const button=document.createElement("button");button.type="button";button.className="memo-card";
@@ -1086,7 +1104,6 @@ function flipMemo(index){
   const [a,b]=memoOpen.map(i=>memoDeck[i]);
   if(a.pairId===b.pairId&&a.style!==b.style){
     a.matched=b.matched=true;memoMatches++;memoOpen=[];
-    shuffleMemoPending();
     $("memoStatus").textContent=memoMatches===6?`¡MEMO COMPLETADO! ${memoMoves} intentos.`:`Pareja ${memoMatches} de 6 · ${memoMoves} intentos.`;
     if(window.genesisPlaySound)window.genesisPlaySound(memoMatches===6?"success":"select");
     renderMemo();return;
@@ -1102,66 +1119,136 @@ function flipMemo(index){
 }
 $("memoRestart").addEventListener("click",startMemo);
 
-// Sudoku jugable sobre el generador y validador compartidos del motor.
-let sudokuPuzzle=null,sudokuBoard=null;
-function refreshSudokuConflicts(){const cells=Array.from(document.querySelectorAll(".sudoku-cell"));const invalid=new Set();for(let i=0;i<cells.length;i++){const a=cells[i],ar=Number(a.dataset.row),ac=Number(a.dataset.col),av=Number(sudokuBoard[ar][ac]);if(!av)continue;for(let j=i+1;j<cells.length;j++){const b=cells[j],br=Number(b.dataset.row),bc=Number(b.dataset.col);if(av===Number(sudokuBoard[br][bc])&&(ar===br||ac===bc||(Math.floor(ar/3)===Math.floor(br/3)&&Math.floor(ac/3)===Math.floor(bc/3)))){invalid.add(a);invalid.add(b);}}}cells.forEach(cell=>cell.classList.toggle("invalid",invalid.has(cell)));return invalid.size;}function startSudoku(){
-  clearGameTimers();const generated=genesisEngine.generateSudoku(Number($("sudokuLevel").value));
-  sudokuPuzzle=generated.puzzle.map(row=>[...row]);sudokuBoard=generated.puzzle.map(row=>[...row]);
+// Sudoku: cuatro niveles secuenciales con tableros y soluciones estables durante la sesión.
+const sudokuClues=[45,40,35,30];
+const SUDOKU_SESSION_KEY="genesis.sudoku.progress.v1";
+function freshSudokuProgress(){return {unlocked:1,completed:[],boards:{}};}
+function loadSudokuProgress(){
+  try{
+    const saved=JSON.parse(sessionStorage.getItem(SUDOKU_SESSION_KEY)||"null");
+    if(!saved||typeof saved!=="object")return freshSudokuProgress();
+    const completed=Array.isArray(saved.completed)?[...new Set(saved.completed.filter(n=>Number.isInteger(n)&&n>=1&&n<=4))].sort():[];
+    return {unlocked:Math.min(4,Math.max(1,Number(saved.unlocked)||1)),completed,boards:saved.boards&&typeof saved.boards==="object"?saved.boards:{}};
+  }catch(_){return freshSudokuProgress();}
+}
+let sudokuProgress=loadSudokuProgress(),sudokuPuzzle=null,sudokuSolution=null,sudokuBoard=null,sudokuCurrentLevel=1,sudokuSolved=false;
+function saveSudokuProgress(){try{sessionStorage.setItem(SUDOKU_SESSION_KEY,JSON.stringify(sudokuProgress));}catch(_){}}
+function memoProgressLocked(){return sudokuProgress.completed.length<4;}
+function syncSudokuUnlocks(){
+  Array.from($("sudokuLevel").options).forEach(option=>{option.disabled=Number(option.value)>sudokuProgress.unlocked;});
+  const memoLocked=memoProgressLocked();$("memoLaunch").disabled=memoLocked;
+  $("memoLockStatus").hidden=!memoLocked||$("moduleGrid").hidden;
+  $("memoLockStatus").textContent=memoLocked?`Memo Test se habilita al completar los cuatro niveles de Sudoku (${sudokuProgress.completed.length}/4).`:"Memo Test desbloqueado. ¡Ya podés jugar!";
+  $("sudokuNext").disabled=!sudokuSolved||sudokuCurrentLevel>=4||sudokuCurrentLevel>=sudokuProgress.unlocked;
+  $("sudokuNext").hidden=sudokuCurrentLevel>=4;
+}
+function refreshSudokuConflicts(){
+  const cells=Array.from(document.querySelectorAll(".sudoku-cell")),invalid=new Set();
+  for(let i=0;i<cells.length;i++){
+    const a=cells[i],ar=Number(a.dataset.row),ac=Number(a.dataset.col),av=Number(sudokuBoard[ar][ac]);if(!av)continue;
+    for(let j=i+1;j<cells.length;j++){
+      const b=cells[j],br=Number(b.dataset.row),bc=Number(b.dataset.col);
+      if(av===Number(sudokuBoard[br][bc])&&(ar===br||ac===bc||(Math.floor(ar/3)===Math.floor(br/3)&&Math.floor(ac/3)===Math.floor(bc/3)))){invalid.add(a);invalid.add(b);}
+    }
+  }
+  cells.forEach(cell=>cell.classList.toggle("invalid",invalid.has(cell)));return invalid.size;
+}
+function getSudokuBoard(level){
+  let board=sudokuProgress.boards[level];
+  if(!board||!Array.isArray(board.puzzle)||!Array.isArray(board.solution)){
+    const generated=genesisEngine.generateSudoku(sudokuClues[level-1]);
+    board={puzzle:generated.puzzle,solution:generated.solution};sudokuProgress.boards[level]=board;saveSudokuProgress();
+  }
+  return board;
+}
+function startSudoku(){
+  clearGameTimers();const requested=Number($("sudokuLevel").value);
+  sudokuCurrentLevel=requested<=sudokuProgress.unlocked?requested:sudokuProgress.unlocked;
+  $("sudokuLevel").value=String(sudokuCurrentLevel);
+  const generated=getSudokuBoard(sudokuCurrentLevel);
+  sudokuPuzzle=generated.puzzle.map(row=>[...row]);sudokuSolution=generated.solution.map(row=>[...row]);
+  sudokuSolved=sudokuProgress.completed.includes(sudokuCurrentLevel);
+  sudokuBoard=(sudokuSolved?generated.solution:generated.puzzle).map(row=>[...row]);
   const grid=$("sudokuGrid");grid.replaceChildren();
   sudokuBoard.forEach((row,r)=>row.forEach((value,c)=>{
     const input=document.createElement("input");input.type="text";input.inputMode="numeric";input.maxLength=1;input.className="sudoku-cell";input.dataset.row=r;input.dataset.col=c;
     input.setAttribute("aria-label",`Fila ${r+1}, columna ${c+1}`);input.setAttribute("role","gridcell");
     if(r===2||r===5)input.classList.add("box-bottom");
     if(value){input.value=value;input.readOnly=true;input.classList.add("given");}
-    else input.addEventListener("input",()=>{input.value=input.value.replace(/[^1-9]/g,"").slice(-1);const previous=sudokuBoard[r][c];const candidate=input.value?Number(input.value):0;if(candidate){const conflict=sudokuBoard.some((row,rr)=>row.some((value,cc)=>value===candidate&&(rr===r||cc===c||(Math.floor(rr/3)===Math.floor(r/3)&&Math.floor(cc/3)===Math.floor(c/3)))));if(conflict){input.value=previous?String(previous):"";if(window.genesisPlaySound)window.genesisPlaySound("error");$("sudokuStatus").textContent="Ese número ya está en la fila, columna o bloque 3×3.";return;}}sudokuBoard[r][c]=candidate;refreshSudokuConflicts();$("sudokuStatus").textContent="Sin conflictos por ahora; podés continuar.";});
+    else {input.readOnly=sudokuSolved;input.addEventListener("input",()=>{
+      input.value=input.value.replace(/[^1-9]/g,"").slice(-1);const previous=sudokuBoard[r][c],candidate=input.value?Number(input.value):0;
+      if(candidate){const conflict=sudokuBoard.some((line,rr)=>line.some((v,cc)=>v===candidate&&(rr===r||cc===c||(Math.floor(rr/3)===Math.floor(r/3)&&Math.floor(cc/3)===Math.floor(c/3)))));
+        if(conflict){input.value=previous?String(previous):"";if(window.genesisPlaySound)window.genesisPlaySound("error");$("sudokuStatus").textContent="Jugada inválida: ese número ya aparece en la fila, columna o bloque 3×3.";return;}
+      }
+      sudokuBoard[r][c]=candidate;refreshSudokuConflicts();$("sudokuStatus").textContent="Jugada válida por ahora; podés continuar.";
+    });}
     grid.appendChild(input);
   }));
-  $("sudokuStatus").textContent=`Tablero nuevo · ${generated.clues} pistas.`;
+  refreshSudokuConflicts();$("sudokuStatus").textContent=sudokuSolved?`Nivel ${sudokuCurrentLevel} completado. Podés continuar.`:`Nivel ${sudokuCurrentLevel} · ${sudokuClues[sudokuCurrentLevel-1]} pistas.`;
+  syncSudokuUnlocks();
 }
 function checkSudoku(){
-  const result=genesisEngine.validateSudoku(sudokuBoard);
-  refreshSudokuConflicts();
-  if(!result.valid){$("sudokuStatus").textContent="Hay números repetidos o fuera de rango en: "+result.errors.slice(0,5).join(", ")+(result.errors.length>5?"…":"");if(window.genesisPlaySound)window.genesisPlaySound("error");return;}
-  if(!result.complete){$("sudokuStatus").textContent="Sin conflictos por ahora; faltan casillas.";return;}
-  $("sudokuStatus").textContent="¡SUDOKU RESUELTO! Filas, columnas y bloques válidos.";if(window.genesisPlaySound)window.genesisPlaySound("success");
+  const result=genesisEngine.validateSudoku(sudokuBoard);refreshSudokuConflicts();
+  if(!result.valid){$("sudokuStatus").textContent="Jugada inválida: hay números repetidos o fuera de rango en "+result.errors.slice(0,5).join(", ")+(result.errors.length>5?"…":"");if(window.genesisPlaySound)window.genesisPlaySound("error");return;}
+  if(!result.complete){$("sudokuStatus").textContent="La grilla es válida hasta ahora, pero faltan casillas.";return;}
+  const matchesSolution=sudokuBoard.every((row,r)=>row.every((value,c)=>Number(value)===Number(sudokuSolution[r][c])));
+  if(!matchesSolution){$("sudokuStatus").textContent="Solución incorrecta: la grilla está completa y sin duplicados, pero no coincide con la solución de este nivel.";if(window.genesisPlaySound)window.genesisPlaySound("error");return;}
+  sudokuSolved=true;if(!sudokuProgress.completed.includes(sudokuCurrentLevel))sudokuProgress.completed.push(sudokuCurrentLevel);
+  sudokuProgress.completed.sort((a,b)=>a-b);if(sudokuCurrentLevel<4)sudokuProgress.unlocked=Math.max(sudokuProgress.unlocked,sudokuCurrentLevel+1);
+  saveSudokuProgress();$("sudokuStatus").textContent=sudokuCurrentLevel===4?"¡LOS CUATRO NIVELES COMPLETADOS! MEMO TEST DESBLOQUEADO.":`¡NIVEL ${sudokuCurrentLevel} RESUELTO! El nivel ${sudokuCurrentLevel+1} ya está habilitado.`;
+  document.querySelectorAll(".sudoku-cell").forEach(input=>input.readOnly=true);
+  if(window.genesisPlaySound)window.genesisPlaySound("success");syncSudokuUnlocks();
 }
+function nextSudokuLevel(){if(!sudokuSolved||sudokuCurrentLevel>=sudokuProgress.unlocked)return;$("sudokuLevel").value=String(sudokuCurrentLevel+1);startSudoku();}
 $("sudokuRestart").addEventListener("click",startSudoku);
 $("sudokuLevel").addEventListener("change",startSudoku);
 $("sudokuCheck").addEventListener("click",checkSudoku);
+$("sudokuNext").addEventListener("click",nextSudokuLevel);
+syncSudokuUnlocks();
 
-// Sopa de Letras: 30 posiciones perimetrales, cinco por lado y selección vecina.
-const wordBank=["GENESIS","DIAMANTE","HEXAGONO","TURQUESA","FREAKCOIN","LUNA","RISA","JUEGO","ORO","NUBE","PINO","TREN","MATE","CASA","FARO","ROCA","AMOR","DADO","FLOR","CIELO","LAGO","SALTO","RITMO","PIEZA","CLAVE","SOLAR","BRISA","VALOR","METAL","IDEA"];
-let wordRound=null,wordFound=new Set(),wordSelection=[];
-function clearWordSelection(){wordSelection=[];document.querySelectorAll(".hex-letter.selected").forEach(node=>node.classList.remove("selected"));}
-function renderWordList(){const list=$("wordList");list.replaceChildren();wordRound.words.forEach(word=>{const chip=document.createElement("span");chip.className="word-chip"+(wordFound.has(word)?" found":"");chip.textContent=wordFound.has(word)?word:"• • • •";chip.setAttribute("aria-label",wordFound.has(word)?"Encontrada: "+word:"Palabra oculta");list.appendChild(chip);});}
-function startWords(){
-  clearGameTimers();wordRound=genesisEngine.generateHexWordSearch(wordBank,Number($("wordLevel").value));wordFound=new Set();wordSelection=[];
-  const board=$("hexBoard");board.replaceChildren();
-  const corners=Array.from({length:6},(_,i)=>({x:50+42*Math.cos((-90+i*60)*Math.PI/180),y:50+42*Math.sin((-90+i*60)*Math.PI/180)}));
-  wordRound.letters.forEach((letter,index)=>{
-    const side=Math.floor(index/5),step=index%5,from=corners[side],to=corners[(side+1)%6],x=from.x+(to.x-from.x)*step/5,y=from.y+(to.y-from.y)*step/5;
-    const button=document.createElement("button");button.type="button";button.className="hex-letter";button.textContent=letter;button.style.left=x+"%";button.style.top=y+"%";button.dataset.index=index;button.setAttribute("aria-label",`Letra ${letter}, lado ${side+1}`);button.addEventListener("click",()=>selectWordLetter(index));board.appendChild(button);
-  });
-  renderWordList();$("wordsStatus").textContent="30 letras · cinco por lado. Elegí letras conectadas.";
+// GENESIS MATRIX: cuatro dimensiones, ocho direcciones, sin cruces y con casillas consumibles.
+const wordBank=["GENESIS","DIAMANTE","HEXAGONO","TURQUESA","FREAKCOIN","LUNA","RISA","JUEGO","ORO","NUBE","PINO","TREN","MATE","CASA","FARO","ROCA","AMOR","DADO","FLOR","CIELO","LAGO","SALTO","RITMO","PIEZA","CLAVE","SOLAR","BRISA","VALOR","METAL","IDEA","AVENTURA","MEMORIA","PLANETA","CAMINO","TESORO","MISTERIO","ESTRELLA","MUSICA","NATURALEZA","DESAFIO","ENERGIA","SONRISA","MONTANA","PIRAMIDE","UNIVERSO","LINTERNA","MARIPOSA","CASCADA","TORMENTA","BICICLETA","COMETA","ARMONIA","FANTASIA","RECORRIDO","ALEGRIA"];
+const wordMatrixLevels={"6x10":{rows:6,cols:10,count:3},"6x12":{rows:6,cols:12,count:4},"12x12":{rows:12,cols:12,count:7},"10x20":{rows:10,cols:20,count:10}};
+let wordRound=null,wordFound=new Set(),wordSelection=[],wordErrors=0,wordScore=0;
+function clearWordSelection(){wordSelection=[];window.wordSearchDirection=null;document.querySelectorAll(".word-letter.selected").forEach(node=>node.classList.remove("selected"));}
+function updateWordStats(){$("wordProgress").textContent=`Encontradas: ${wordFound.size}/${wordRound.words.length}`;$("wordErrors").textContent=`Errores: ${wordErrors}/3`;$("wordScore").textContent=`Puntaje: ${wordScore}`;}
+function renderWordList(){const list=$("wordList");list.replaceChildren();wordRound.words.forEach(word=>{const chip=document.createElement("span");chip.className="word-chip"+(wordFound.has(word)?" found":"");chip.textContent=word;chip.setAttribute("aria-label",wordFound.has(word)?"Encontrada: "+word:"Pendiente: "+word);list.appendChild(chip);});updateWordStats();}
+function startWords({keepScore=false,message=""}={}){
+  clearGameTimers();const level=wordMatrixLevels[$("wordLevel").value];
+  wordRound=genesisEngine.generateWordMatrix(wordBank,level.count,level.rows,level.cols);wordFound=new Set();wordErrors=0;wordSelection=[];if(!keepScore)wordScore=0;
+  const board=$("wordBoard");board.replaceChildren();board.style.setProperty("--word-cols",String(wordRound.cols));board.dataset.wide=String(wordRound.cols>12);board.setAttribute("aria-rowcount",String(wordRound.rows));board.setAttribute("aria-colcount",String(wordRound.cols));
+  wordRound.grid.forEach((row,r)=>row.forEach((letter,c)=>{
+    const index=r*wordRound.cols+c,button=document.createElement("button");button.type="button";button.className="word-letter";button.textContent=letter;button.dataset.index=index;button.dataset.row=r;button.dataset.col=c;
+    button.setAttribute("role","gridcell");button.setAttribute("aria-label",`Letra ${letter}, fila ${r+1}, columna ${c+1}`);button.addEventListener("click",()=>selectWordLetter(index));board.appendChild(button);
+  }));
+  renderWordList();$("wordsStatus").textContent=message||`Matriz ${wordRound.rows} × ${wordRound.cols}. Buscá ${wordRound.words.length} palabras rectas en horizontal, vertical o diagonal; también al revés.`;
 }
+function wordMistake(message){wordErrors++;clearWordSelection();updateWordStats();if(wordErrors>=3){startWords({keepScore:true,message:"TERCER ERROR · Se mezcló toda la matriz, incluidas las letras halladas. Empezó una nueva ronda."});return;}$("wordsStatus").textContent=`${message} Error ${wordErrors} de 3.`;}
 function selectWordLetter(index){
-  const node=$("hexBoard").querySelector(`[data-index="${index}"]`);if(!node||node.classList.contains("consumed"))return;
+  const board=$("wordBoard"),node=board.querySelector(`[data-index="${index}"]`);if(!node||node.classList.contains("consumed"))return;
   if(wordSelection.includes(index)){clearWordSelection();return;}
-  if(wordSelection.length){const last=wordSelection[wordSelection.length-1],connected=index===(last+1)%30||index===(last+29)%30;if(!connected){clearWordSelection();}}
+  if(wordSelection.length){
+    const prev=board.querySelector(`[data-index="${wordSelection[wordSelection.length-1]}"]`),dr=Number(node.dataset.row)-Number(prev.dataset.row),dc=Number(node.dataset.col)-Number(prev.dataset.col);
+    if(Math.abs(dr)>1||Math.abs(dc)>1||(!dr&&!dc)){wordMistake("Selección inválida: continuá en una línea recta.");return;}
+    if(wordSelection.length===1)window.wordSearchDirection={dr,dc};
+    else if(!window.wordSearchDirection||dr!==window.wordSearchDirection.dr||dc!==window.wordSearchDirection.dc){wordMistake("Selección inválida: mantené la misma dirección.");return;}
+  }
   wordSelection.push(index);node.classList.add("selected");
-  const forward=wordRound.placements.some(p=>p.indices.slice(0,wordSelection.length).every((cell,i)=>cell===wordSelection[i]));
-  const reverse=wordRound.placements.some(p=>[...p.indices].reverse().slice(0,wordSelection.length).every((cell,i)=>cell===wordSelection[i]));
-  if(!forward&&!reverse){$("wordsStatus").textContent="Esa secuencia no inicia una palabra objetivo; probá otra selección.";clearWordSelection();return;}
-  const placement=wordRound.placements.find(p=>p.indices.length===wordSelection.length&&(p.indices.every((cell,i)=>cell===wordSelection[i])||[...p.indices].reverse().every((cell,i)=>cell===wordSelection[i])));
-  if(placement&&!wordFound.has(placement.word)){
-    wordFound.add(placement.word);wordSelection.forEach(cell=>$("hexBoard").querySelector(`[data-index="${cell}"]`).classList.add("consumed"));clearWordSelection();renderWordList();
-    $("wordsStatus").textContent=wordFound.size===wordRound.words.length?"¡SOPA COMPLETADA! Encontraste todas las palabras.":`Encontraste ${placement.word} · ${wordFound.size} de ${wordRound.words.length}.`;
-    if(window.genesisPlaySound)window.genesisPlaySound(wordFound.size===wordRound.words.length?"success":"select");
-  }else $("wordsStatus").textContent="Secuencia conectada: "+wordSelection.map(i=>wordRound.letters[i]).join("");
+  const sequence=wordSelection.map(i=>board.querySelector(`[data-index="${i}"]`).textContent).join("");
+  const reversed=[...sequence].reverse().join("");
+  const found=wordRound.words.find(word=>word===sequence||word===reversed);
+  if(found&&!wordFound.has(found)){
+    wordFound.add(found);wordScore+=found.length*({"6x10":1,"6x12":2,"12x12":3,"10x20":4}[$("wordLevel").value]);wordSelection.forEach(cell=>board.querySelector(`[data-index="${cell}"]`).classList.add("found-letter","consumed"));clearWordSelection();renderWordList();
+    $("wordsStatus").textContent=wordFound.size===wordRound.words.length?`¡MATRIZ COMPLETADA! Puntaje de ronda: ${wordScore}.`:`Encontraste ${found} · ${wordFound.size} de ${wordRound.words.length}.`;
+    if(window.genesisPlaySound)window.genesisPlaySound(wordFound.size===wordRound.words.length?"success":"select");return;
+  }
+  const forward=wordRound.words.some(word=>word.startsWith(sequence)),reverse=wordRound.words.some(word=>word.startsWith(reversed));
+  if(!forward&&!reverse){wordMistake("Esa secuencia no corresponde a una palabra objetivo.");return;}
+  $("wordsStatus").textContent="Secuencia: "+sequence;
 }
 $("wordsRestart").addEventListener("click",startWords);
 $("wordLevel").addEventListener("change",startWords);
-$("wordUndo").addEventListener("click",()=>{clearWordSelection();$("wordsStatus").textContent="Selección limpia; las parejas de letras siguen disponibles.";});
+$("wordUndo").addEventListener("click",()=>{clearWordSelection();$("wordsStatus").textContent="Selección limpia. Las letras de palabras encontradas quedan consumidas.";});
 
 
 // Controles de consola: piezas, símbolos, luminosidad, sonido y vista inmersiva.
@@ -1173,47 +1260,84 @@ $("wordUndo").addEventListener("click",()=>{clearWordSelection();$("wordsStatus"
   const soundButton=document.getElementById("soundToggle");
    const volumeControl=document.getElementById("volumeControl");
   const fullscreenButton=document.getElementById("fullscreenToggle");
-  let soundEnabled=false;
+  let soundEnabled=true;
   let audioContext=null;
   const activeVoices=new Set();
+
   function syncSoundControl(){
     soundButton.textContent=soundEnabled?"SONIDO: ACTIVADO":"SONIDO: DESACTIVADO";
     soundButton.setAttribute("aria-pressed",String(soundEnabled));
     document.documentElement.dataset.sound=soundEnabled?"on":"off";
   }
+
   function stopActiveVoices(){
     activeVoices.forEach(voice=>{try{voice.stop();}catch(_){}});
     activeVoices.clear();
   }
+
   function setSoundEnabled(enabled){
     soundEnabled=Boolean(enabled);
     syncSoundControl();
     if(!soundEnabled) stopActiveVoices();
   }
-  window.genesisPlaySound=function(kind){
+
+  syncSoundControl();
+
+  async function unlockAudio(){
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtx) return false;
+    audioContext=audioContext||new AudioCtx();
+    if(audioContext.state!=="running") await audioContext.resume();
+    return audioContext.state==="running";
+  }
+
+  document.addEventListener("pointerdown",()=>{
+    if(soundEnabled) unlockAudio().catch(error=>console.warn("GENESIS audio:",error));
+  },{once:true,capture:true});
+  document.addEventListener("keydown",()=>{
+    if(soundEnabled) unlockAudio().catch(error=>console.warn("GENESIS audio:",error));
+  },{once:true,capture:true});
+  window.genesisPlaySound=async function(kind){
     if(!soundEnabled)return;
     try{
       const AudioCtx=window.AudioContext||window.webkitAudioContext;
       if(!AudioCtx)return;
-      audioContext=audioContext||new AudioCtx();
-      if(audioContext.state==="suspended") audioContext.resume().catch(()=>{});
-      if(activeVoices.size>=3) activeVoices.values().next().value.stop();
-      const osc=audioContext.createOscillator(), gain=audioContext.createGain();
-      const tones={select:520,swap:660,success:880,error:190,newgame:440,plop:920,simon0:262,simon1:330,simon2:392,simon3:523};
-      const duration=kind==="plop"?.12:.18;
-      osc.type="sine";osc.frequency.setValueAtTime(tones[kind]||520,audioContext.currentTime);
-      if(kind==="plop")osc.frequency.exponentialRampToValueAtTime(480,audioContext.currentTime+duration);
-      gain.gain.setValueAtTime(0.0001,audioContext.currentTime);
-      const peak=(kind==="plop"?.055:.07)*Number(volumeControl.value)/100;
-      gain.gain.exponentialRampToValueAtTime(Math.max(0.0001,peak),audioContext.currentTime+0.015);
-      gain.gain.exponentialRampToValueAtTime(0.0001,audioContext.currentTime+duration);
-      osc.connect(gain);gain.connect(audioContext.destination);
+      if(!await unlockAudio()) return;
+
+      if(activeVoices.size>=4) activeVoices.values().next().value.stop();
+
+      const now=audioContext.currentTime;
+      const osc=audioContext.createOscillator();
+      const gain=audioContext.createGain();
+      const tones={
+        select:520,swap:660,success:880,error:190,newgame:440,
+        plop:920,simon0:392,simon1:523,simon2:659,simon3:784
+      };
+      const isPlop=kind==="plop";
+      const isSimon=String(kind).startsWith("simon");
+      const duration=isPlop?0.22:(isSimon?0.34:0.20);
+
+      osc.type=isPlop?"sine":isSimon?"square":"triangle";
+      osc.frequency.setValueAtTime(tones[kind]||520,now);
+      if(isPlop) osc.frequency.exponentialRampToValueAtTime(420,now+duration);
+
+      const peak=(isSimon?0.72:isPlop?0.48:0.58)*Number(volumeControl.value)/100;
+      gain.gain.setValueAtTime(0.0001,now);
+      gain.gain.exponentialRampToValueAtTime(Math.max(0.0001,peak),now+0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001,now+duration);
+
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
       activeVoices.add(osc);
       osc.onended=()=>activeVoices.delete(osc);
-      osc.start();osc.stop(audioContext.currentTime+duration+0.01);
-    }catch(_){}
+      osc.start(now);
+      osc.stop(now+duration+0.01);
+    }catch(error){
+      console.warn("GENESIS audio:",error);
+    }
   };
-   window.genesisStopSounds=stopActiveVoices;
+
+  window.genesisStopSounds=stopActiveVoices;
   function setOutput(id,value){const out=document.getElementById(id);if(out)out.textContent=value+"%";}
   function applyPieceScale(){
     const scale=Number(pieceSize.value)/100;
@@ -1243,9 +1367,19 @@ $("wordUndo").addEventListener("click",()=>{clearWordSelection();$("wordsStatus"
   symbolSize.addEventListener("input",applySymbolScale);
   brightness.addEventListener("input",applyBrightness);
    volumeControl.addEventListener("input",()=>{setOutput("volumeOut",volumeControl.value);});
-  soundButton.addEventListener("click",()=>{
-    setSoundEnabled(!soundEnabled);
-    if(soundEnabled) window.genesisPlaySound("select");
+  soundButton.addEventListener("click",async()=>{
+    if(soundEnabled){
+      setSoundEnabled(false);
+      return;
+    }
+    setSoundEnabled(true);
+    try{
+      if(await unlockAudio()) await window.genesisPlaySound("success");
+      else setSoundEnabled(false);
+    }catch(error){
+      console.warn("No se pudo activar el audio:",error);
+      setSoundEnabled(false);
+    }
   });
   async function toggleFullscreen(){
     try{
@@ -1268,14 +1402,70 @@ $("wordUndo").addEventListener("click",()=>{clearWordSelection();$("wordsStatus"
   });
   const reset=document.getElementById("resetPreferences");
   if(reset) reset.addEventListener("click",()=>{
-    pieceSize.value=100;symbolSize.value=100;brightness.value=100;volumeControl.value=70;
+    pieceSize.value=100;symbolSize.value=100;brightness.value=100;volumeControl.value=100;
     applyPieceScale();applySymbolScale();applyBrightness();setOutput("volumeOut",volumeControl.value);
-    setSoundEnabled(false);
+    setSoundEnabled(true);
   });
    applyPieceScale();applySymbolScale();applyBrightness();setOutput("volumeOut",volumeControl.value);
 })();
 
 </script>
-<script src="genesis-referrals.demo.js"></script>
+<script src="genesis-referrals.demo.js?v=0.4.1-test"></script>
+<script>
+(function(){
+  "use strict";
+  const BUILD_VERSION="0.4.1-test";
+  const notice=document.getElementById("appUpdateNotice"),message=document.getElementById("appUpdateMessage");
+  const applyButton=document.getElementById("applyUpdateButton"),checkButton=document.getElementById("checkUpdates");
+  const pwaStatus=document.getElementById("pwaStatus"),installButton=document.getElementById("installPwaButton");
+  let registration=null,updateAvailable=false,activationRequested=false,reloading=false,deferredInstallPrompt=null;
+  function showPendingUpdate(){
+    updateAvailable=true;notice.hidden=false;
+    message.textContent="GENESIS "+BUILD_VERSION+" detectó una versión nueva. Se aplicará al volver al menú o al reiniciar un juego.";
+    if(activeModule==="home")applyAtSafePoint();
+  }
+  function applyAtSafePoint(){
+    if(!updateAvailable||!registration||!registration.waiting||activationRequested)return;
+    activationRequested=true;message.textContent="Actualizando desde un punto seguro…";
+    registration.waiting.postMessage({type:"SKIP_WAITING"});
+  }
+  window.genesisApplyPendingUpdate=applyAtSafePoint;
+  function watchInstalling(worker){
+    if(!worker)return;
+    worker.addEventListener("statechange",()=>{
+      if(worker.state==="installed"&&navigator.serviceWorker.controller)showPendingUpdate();
+    });
+  }
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.addEventListener("controllerchange",()=>{
+      if(activationRequested&&!reloading){reloading=true;location.reload();}
+    });
+    navigator.serviceWorker.register("./service-worker.js",{scope:"./",updateViaCache:"none"}).then(reg=>{
+      registration=reg;pwaStatus.textContent="PWA lista · versión "+BUILD_VERSION+".";
+      if(reg.waiting&&navigator.serviceWorker.controller)showPendingUpdate();
+      reg.addEventListener("updatefound",()=>watchInstalling(reg.installing));
+      checkButton.addEventListener("click",async()=>{
+        pwaStatus.textContent="Buscando una versión nueva…";
+        try{await reg.update();if(reg.waiting&&navigator.serviceWorker.controller)showPendingUpdate();else pwaStatus.textContent="PWA lista · estás usando "+BUILD_VERSION+".";}
+        catch(_){pwaStatus.textContent="No se pudo verificar ahora; probá con conexión y volvé a intentar.";}
+      });
+      document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")reg.update().catch(()=>{});});
+    }).catch(()=>{pwaStatus.textContent="PWA no disponible en este origen. Abrí desde localhost o HTTPS.";});
+  }else pwaStatus.textContent="Este navegador no admite service workers.";
+  applyButton.addEventListener("click",()=>{
+    if(activeModule==="home")applyAtSafePoint();
+    else message.textContent="Actualización programada; terminá la ronda o reiniciá para aplicarla con seguridad.";
+  });
+  document.querySelectorAll("#simonRestart,#simonStartControl,#memoRestart,#sudokuRestart,#wordsRestart,#newGame").forEach(button=>button.addEventListener("click",()=>window.genesisApplyPendingUpdate&&window.genesisApplyPendingUpdate()));
+  window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();deferredInstallPrompt=event;installButton.hidden=false;});
+  installButton.addEventListener("click",async()=>{
+    if(!deferredInstallPrompt){pwaStatus.textContent="Usá el menú de instalación del navegador si está disponible.";return;}
+    deferredInstallPrompt.prompt();const choice=await deferredInstallPrompt.userChoice;
+    pwaStatus.textContent=choice.outcome==="accepted"?"GENESIS quedó instalada.":"Instalación cancelada; podés intentarlo después.";
+    deferredInstallPrompt=null;installButton.hidden=true;
+  });
+  window.addEventListener("appinstalled",()=>{pwaStatus.textContent="GENESIS quedó instalada.";installButton.hidden=true;});
+})();
+</script>
 </body>
 </html>

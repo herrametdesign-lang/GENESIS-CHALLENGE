@@ -160,6 +160,61 @@ class GenesisEngine {
     );
   }
 
+  // GENESIS MATRIX aditivo: rectangular, sin solapamientos y con direcciones rectas.
+  // Se conserva generateWordSearch y el generador histórico de 30 celdas.
+  generateWordMatrix(wordBank, count, rows, cols) {
+    if (!Array.isArray(wordBank) || !Number.isInteger(count) || count < 1 ||
+        !Number.isInteger(rows) || !Number.isInteger(cols) || rows < 2 || cols < 2) {
+      throw new Error("Configuración de matriz inválida.");
+    }
+    const chemicalSymbols = new Set([
+      "HE", "LI", "BE", "NE", "NA", "MG", "AL", "SI", "CL", "AR",
+      "CA", "SC", "TI", "CR", "MN", "FE", "CO", "NI", "CU", "ZN",
+      "AG", "SN", "AU", "HG", "PB", "BI", "U"
+    ]);
+    const bank = [...new Set(wordBank.map(word => this.normalizeWord(word)))].filter(word =>
+      word.length >= 3 && word.length <= Math.max(rows, cols) &&
+      this.countSpanishSyllables(word) >= 2 && !chemicalSymbols.has(word));
+    if (bank.length < count) throw new Error(`No hay ${count} palabras elegibles para esta matriz.`);
+
+    const directions = [[0,1],[1,0],[1,1],[-1,1],[0,-1],[-1,0],[-1,-1],[1,-1]];
+    const consonants = "BCDFGHJKLMNÑPQRSTVWXYZ";
+    const vowels = "AEIOU";
+    for (let outer = 0; outer < 120; outer++) {
+      const chosen = this.shuffle(bank).slice(0, count).sort((a,b) => b.length - a.length);
+      const grid = Array.from({length: rows}, () => Array(cols).fill(""));
+      const placements = [];
+      let success = true;
+      for (const word of chosen) {
+        let placed = false;
+        for (let attempt = 0; attempt < 500 && !placed; attempt++) {
+          const [dr, dc] = directions[this.randomInt(directions.length)];
+          const row = this.randomInt(rows), col = this.randomInt(cols);
+          const endRow = row + dr * (word.length - 1), endCol = col + dc * (word.length - 1);
+          if (endRow < 0 || endRow >= rows || endCol < 0 || endCol >= cols) continue;
+          let fits = true;
+          for (let i = 0; i < word.length; i++) if (grid[row + dr*i][col + dc*i]) { fits = false; break; }
+          if (!fits) continue;
+          for (let i = 0; i < word.length; i++) grid[row + dr*i][col + dc*i] = word[i];
+          placements.push({word,row,col,dr,dc});
+          placed = true;
+        }
+        if (!placed) { success = false; break; }
+      }
+      if (!success) continue;
+      const empty = [];
+      for (let r=0;r<rows;r++) for (let c=0;c<cols;c++) if (!grid[r][c]) empty.push([r,c]);
+      const vowelCount = Math.round(empty.length * 0.42);
+      const fillers = this.shuffle([
+        ...Array(vowelCount).fill(null).map(() => vowels[this.randomInt(vowels.length)]),
+        ...Array(empty.length-vowelCount).fill(null).map(() => consonants[this.randomInt(consonants.length)])
+      ]);
+      empty.forEach(([r,c], i) => { grid[r][c] = fillers[i]; });
+      return {grid,words:chosen,placements,rows,cols,size:rows===cols?rows:null};
+    }
+    throw new Error("No se pudo crear una matriz sin cruces. Probá otra vez.");
+  }
+
   // Crea seis parejas sólido/contorno listas para presentar como Memo Test.
   generateMemoPairs(figures = ["◆", "●", "▲", "■", "★", "⬟"]) {
     if (!Array.isArray(figures) || figures.length < 2) {
